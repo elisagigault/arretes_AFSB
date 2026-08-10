@@ -1,127 +1,167 @@
 <!DOCTYPE html>
-<html lang=
+<html lang="fr">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Carte des arrêtés AFSB</title>
+    <title>Carte des arrêtés AFSB</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<style>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-}
+        #toolbar {
+            padding: 10px;
+            background: white;
+            border-bottom: 1px solid #ccc;
+        }
 
-#toolbar {
-    padding: 10px;
-    background: white;
-    border-bottom: 1px solid #ccc;
-}
+        #map {
+            height: calc(100vh - 60px);
+        }
 
-#map {
-    height: calc(100vh - 55px);
-}
-
-</style>
-
+        button {
+            margin-left: 5px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="toolbar">
+    <div id="toolbar">
+        <label>Date de consultation :</label>
 
-<label>Date de consultation :</label>
+        <input type="date" id="dateSelect">
 
-<input type="date" id="dateSelect">
+        <button onclick="filtrerDate()">
+            Afficher les arrêtés actifs
+        </button>
 
-<button onclick="filtrerDate()">
-Afficher les arrêtés actifs
-</button>
+        <button onclick="afficherTous()">
+            Tout afficher
+        </button>
+    </div>
 
-<button onclick="afficherTous()">
-Tout afficher
-</button>
+    <div id="map"></div>
 
-</div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<div id="map"></div>
+    <script>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        const map = L.map("map").setView([44.74, -0.53], 13);
 
-<script>
+        L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            {
+                maxZoom: 20,
+                attribution: "Esri"
+            }
+        ).addTo(map);
 
-const map = L.map('map').setView([44.74,-0.53],13);
+        let donneesGeojson;
+        let couche;
 
-L.tileLayer(
-'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-{
-    maxZoom:20
-}
-).addTo(map);
+        function parseDate(valeur) {
 
-let donneesGeojson;
-let couche;
+            if (!valeur) return null;
 
-function afficherTous(){
+            if (valeur.includes("/")) {
 
-    if(couche){
-        map.removeLayer(couche);
-    }
+                const morceaux = valeur.split("/");
 
-    couche = L.geoJSON(donneesGeojson).addTo(map);
+                return new Date(
+                    Number(morceaux[2]),
+                    Number(morceaux[1]) - 1,
+                    Number(morceaux[0])
+                );
 
-}
+            }
 
-function filtrerDate(){
+            return new Date(valeur);
 
-    const dateChoisie =
-        new Date(document.getElementById("dateSelect").value);
+        }
 
-    if(couche){
-        map.removeLayer(couche);
-    }
+        function afficherTous() {
 
-    const resultat = {
-        "type":"FeatureCollection",
-        "features": donneesGeojson.features.filter(f => {
+            if (couche) {
+                map.removeLayer(couche);
+            }
 
-            const debut =
-                new Date(f.properties["Date début"]);
+            couche = L.geoJSON(donneesGeojson).addTo(map);
 
-            const fin =
-                new Date(f.properties["Date fin"]);
+        }
 
-            return (
-                dateChoisie >= debut &&
-                dateChoisie <= fin
-            );
+        function filtrerDate() {
 
-        })
-    };
+            const valeurDate =
+                document.getElementById("dateSelect").value;
 
-    couche = L.geoJSON(resultat).addTo(map);
+            if (!valeurDate) {
+                alert("Choisissez une date");
+                return;
+            }
 
-}
+            const dateChoisie = new Date(valeurDate);
 
-fetch("arr_t_s_afsb.geojson")
-.then(r => r.json())
-.then(data => {
+            const resultat = {
+                type: "FeatureCollection",
+                features: donneesGeojson.features.filter(feature => {
 
-    donneesGeojson = data;
+                    const debut =
+                        parseDate(feature.properties["Date début"]);
 
-    couche = L.geoJSON(data).addTo(map);
+                    const fin =
+                        parseDate(feature.properties["Date fin"]);
 
-    map.fitBounds(couche.getBounds());
+                    if (!debut || !fin) {
+                        return false;
+                    }
 
-});
+                    return (
+                        dateChoisie >= debut &&
+                        dateChoisie <= fin
+                    );
 
-</script>
+                })
+            };
+
+            if (couche) {
+                map.removeLayer(couche);
+            }
+
+            couche = L.geoJSON(resultat).addTo(map);
+
+        }
+
+        fetch("arr_t_s_afsb.geojson")
+            .then(response => response.json())
+            .then(data => {
+
+                donneesGeojson = data;
+
+                couche = L.geoJSON(data).addTo(map);
+
+                if (couche.getBounds().isValid()) {
+                    map.fitBounds(couche.getBounds());
+                }
+
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Impossible de charger le fichier GeoJSON");
+            });
+
+    </script>
 
 </body>
+
 </html>
+``
