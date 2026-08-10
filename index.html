@@ -21,11 +21,11 @@ font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 #sidebar{
 
 position:absolute;
-top:10px;
-left:10px;
+top:65px;
+left:15px;
 
-width:330px;
-max-height:95vh;
+width:340px;
+max-height:88vh;
 
 overflow:auto;
 
@@ -33,11 +33,11 @@ z-index:1000;
 
 background:white;
 
-padding:15px;
+padding:18px;
 
-border-radius:8px;
+border-radius:12px;
 
-box-shadow:0 0 12px rgba(0,0,0,0.25);
+box-shadow:0 4 20px rgba(0,0,0,0.18);
 }
 
 #sidebar h2{
@@ -76,27 +76,36 @@ font-size:14px;
 
 .groupe{
 
-font-weight:bold;
-
 margin-top:12px;
+padding:6px 8px;
 
-padding-top:5px;
+font-weight:600;
 
-border-top:1px solid #ddd;
+background:#f6f6f6;
+
+border-radius:6px;
+
+border-left:4px solid #999;
 }
 
 .arrete-item{
 
-padding:4px;
+padding:6px 8px;
+
+margin:3px 0;
 
 cursor:pointer;
 
-border-radius:4px;
+border-radius:6px;
+
+transition:0.2s;
 }
 
 .arrete-item:hover{
 
-background:#f0f0f0;
+background:#eaf3ff;
+
+transform:translateX(3px);
 }
 
 #map{
@@ -348,8 +357,14 @@ document.createElement("div");
 titre.className="groupe";
 
 titre.innerHTML=
-"▼ " + type +
-" (" + groupes[type].length + ")";
+'<span style="color:'+
+getColor(type)+
+';font-size:18px;">●</span> '
++
+type+
+' ('+
+groupes[type].length+
+')';
 
 liste.appendChild(titre);
 
@@ -371,12 +386,18 @@ feature.properties["Arrêté"]
 
 item.onclick=function(){
 
-const z=
-L.geoJSON(feature);
+const z=L.geoJSON(feature);
 
 map.fitBounds(
-z.getBounds()
+z.getBounds(),
+{
+padding:[150,150]
+}
 );
+
+if(map.getZoom()>17){
+map.setZoom(17);
+}
 
 };
 
