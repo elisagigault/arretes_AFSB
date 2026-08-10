@@ -2,86 +2,143 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Arrêtés</title>
+
+<title>Arrêtés AFSB</title>
 
 <link rel="stylesheet"
-href="https://unpkg.comtyle>
+href="https://unpkg.com/leaflet/dist/leaflet.css"/-family:Arial;
+}
+
+#controls{
+padding:10px;
+background:white;
+}
+
 #map{
 height:90vh;
 }
 
-.menu{
-padding:10px;
-background:white;
-}
 </style>
+
 </head>
 
 <body>
 
-<div class="menu">
-Début :
-<input type="date" id="debut">
+<div id="controls">
 
-Fin :
-<input type="date" id="fin">
+Date de consultation :
 
-<button onclick="filtrer()">
+<input type="date" id="dateSelect">
+
+<button onclick="filterMap()">
 Filtrer
 </button>
+
+<button onclick="resetMap()">
+Tout afficher
+</button>
+
 </div>
 
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet/dist/ipt>
+<script src="https://flet/dist/leaflet.jsscript>
 
 <script>
 
-var map = L.map('map')
-.setView([44.74,-0.53],13);
+var map = L.map('map').setView([44.74,-0.53],13);
 
 L.tileLayer(
-'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+{
+maxZoom:19
+}
 ).addTo(map);
 
-var couche;
+var geojsonLayer;
+var geojsonData;
 
-fetch('arretes.geojson')
+fetch("arretes.geojson")
 .then(r=>r.json())
 .then(data=>{
 
-window.dataGeojson=data;
+geojsonData=data;
 
-couche=L.geoJSON(data,{
-onEachFeature:function(feature,layer){
-
-layer.bindPopup(
-feature.properties.numero
-);
-
-}
+geojsonLayer=L.geoJSON(data,{
+style: styleFeature,
+onEachFeature: popupFeature
 }).addTo(map);
 
 });
 
-function filtrer(){
+function styleFeature(feature){
 
-var d1=document.getElementById("debut").value;
-var d2=document.getElementById("fin").value;
+return{
+color:"#ff3300",
+weight:4,
+fillOpacity:0.4
+};
 
-map.removeLayer(couche);
+}
 
-couche=L.geoJSON(dataGeojson,{
+function popupFeature(feature,layer){
 
-filter:function(feature){
+var p=feature.properties;
 
-return (
-feature.properties.date_debut <= d2 &&
-feature.properties.date_fin >= d1
+layer.bindPopup(
+"<b>"+(p.numero||"Arrêté")+"</b><br>"+
+"Début : "+(p.date_debut||"") +"<br>"+
+"Fin : "+(p.date_fin||"")
 );
 
 }
 
+function filterMap(){
+
+var selectedDate=
+document.getElementById("dateSelect").value;
+
+if(!selectedDate){
+return;
+}
+
+if(geojsonLayer){
+map.removeLayer(geojsonLayer);
+}
+
+geojsonLayer=L.geoJSON(geojsonData,{
+
+filter:function(feature){
+
+var debut=new Date(feature.properties.date_debut);
+
+var fin=new Date(feature.properties.date_fin);
+
+var test=new Date(selectedDate);
+
+return (
+test>=debut &&
+test<=fin
+);
+
+},
+
+style:styleFeature,
+onEachFeature:popupFeature
+
+}).addTo(map);
+
+}
+
+function resetMap(){
+
+if(geojsonLayer){
+map.removeLayer(geojsonLayer);
+}
+
+geojsonLayer=L.geoJSON(geojsonData,{
+style:styleFeature,
+onEachFeature:popupFeature
 }).addTo(map);
 
 }
