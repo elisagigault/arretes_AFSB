@@ -5,10 +5,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Carte des arrêtés AFSB</title>
+<title>Arrêtés des AFSB</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 
@@ -17,6 +16,10 @@ margin:0;
 padding:0;
 height:100%;
 font-family:Arial,sans-serif;
+}
+
+h2{
+margin:10px;
 }
 
 #toolbar{
@@ -29,8 +32,14 @@ gap:10px;
 align-items:center;
 }
 
+#types{
+padding:10px;
+background:white;
+border-bottom:1px solid #ccc;
+}
+
 #map{
-height:calc(100vh - 110px);
+height:calc(100vh - 145px);
 }
 
 .legend{
@@ -46,19 +55,19 @@ display:inline-block;
 width:15px;
 height:15px;
 margin-right:5px;
-vertical-align:middle;
 }
 
-.types{
-padding:5px;
-background:white;
-border-bottom:1px solid #ccc;
+input[type=text]{
+width:140px;
 }
 
 </style>
+
 </head>
 
 <body>
+
+<h2>Arrêtés des AFSB</h2>
 
 <div id="toolbar">
 
@@ -67,6 +76,9 @@ border-bottom:1px solid #ccc;
 
 <label>Date fin :</label>
 <input type="date" id="dateFin">
+
+<label>Recherche arrêté :</label>
+<input type="text" id="rechercheArrete" placeholder="2026-0084">
 
 <button onclick="filtrerPeriode()">
 Filtrer
@@ -78,29 +90,25 @@ Tout afficher
 
 </div>
 
-<div class="types">
+<div id="types">
 
 <label>
-<input type="checkbox" class="typeFilter"
-value="Circulation alternée" checked>
+<input type="checkbox" class="typeFilter" value="Circulation alternée" checked>
 Circulation alternée
 </label>
 
 <label>
-<input type="checkbox" class="typeFilter"
-value="Route barrée" checked>
+<input type="checkbox" class="typeFilter" value="Route barrée" checked>
 Route barrée
 </label>
 
 <label>
-<input type="checkbox" class="typeFilter"
-value="Déviation" checked>
+<input type="checkbox" class="typeFilter" value="Déviation" checked>
 Déviation
 </label>
 
 <label>
-<input type="checkbox" class="typeFilter"
-value="Circulation restreinte" checked>
+<input type="checkbox" class="typeFilter" value="Circulation restreinte" checked>
 Circulation restreinte
 </label>
 
@@ -112,7 +120,7 @@ Circulation restreinte
 
 <script>
 
-const map=L.map('map').setView([44.74,-0.53],13);
+const map = L.map('map').setView([44.74,-0.53],13);
 
 L.tileLayer(
 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -122,16 +130,24 @@ attribution:'Esri'
 }
 ).addTo(map);
 
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+opacity:0.35
+}
+).addTo(map);
+
 let donnees;
 let couche;
 
 function parseDate(v){
 
-if(!v) return null;
+if(!v || v==="NULL")
+return null;
 
-if(v.includes('/')){
+if(v.includes("/")){
 
-let p=v.split('/');
+const p=v.split("/");
 
 return new Date(
 Number(p[2]),
@@ -153,7 +169,7 @@ case "Route barrée":
 return "#e60000";
 
 case "Déviation":
-return "#ff8800";
+return "#00aa00";
 
 case "Circulation alternée":
 return "#ffd700";
@@ -168,6 +184,14 @@ return "#3388ff";
 
 }
 
+function getTypesSelectionnes(){
+
+return Array.from(
+document.querySelectorAll(".typeFilter:checked")
+).map(c=>c.value);
+
+}
+
 function dessiner(data){
 
 if(couche){
@@ -178,13 +202,30 @@ couche=L.geoJSON(data,{
 
 style:function(feature){
 
-const type=feature.properties["Type"];
+const type=
+feature.properties["Type"];
+
+const estDemande =
+feature.properties["Arrêté"] ===
+"Demande en cours";
 
 return{
+
 color:getColor(type),
 fillColor:getColor(type),
-weight:4,
-fillOpacity:0.4
+
+weight:2,
+
+fillOpacity:
+type==="Déviation"
+?0.15
+:0.25,
+
+dashArray:
+estDemande
+?"8 8"
+:null
+
 };
 
 },
@@ -194,23 +235,19 @@ onEachFeature:function(feature,layer){
 layer.bindTooltip(
 
 "<b>Arrêté :</b> "
-+ (feature.properties["Arrêté"] || "") +
++(feature.properties["Arrêté"]||"")
 
-"<br><b>Type :</b> "
-+ (feature.properties["Type"] || "") +
++"<br><b>Description :</b> "
++(feature.properties["description"]||"")
 
-"<br><b>Début :</b> "
-+ (feature.properties["Date début arrêté"]
-|| feature.properties["Date début"]
-|| "") +
++"<br><b>Type :</b> "
++(feature.properties["Type"]||"")
 
-"<br><b>Fin :</b> "
-+ (feature.properties["Date fin arrêté"]
-|| feature.properties["Date fin"]
-|| "Permanent") +
++"<br><b>Date début :</b> "
++(feature.properties["Date début"]||"")
 
-"<br><b>Description :</b> "
-+ (feature.properties["description"] || ""),
++"<br><b>Date fin :</b> "
++(feature.properties["Date fin"]||""),
 
 {
 sticky:true
@@ -224,32 +261,37 @@ sticky:true
 
 }
 
-function getTypesSelectionnes(){
-
-return Array.from(
-document.querySelectorAll(".typeFilter:checked")
-).map(c=>c.value);
-
-}
-
 function filtrerPeriode(){
 
-if(!donnees) return;
-
-const debutSaisi=
-document.getElementById("dateDebut").value;
-
-const finSaisi=
-document.getElementById("dateFin").value;
-
-const types=
+const types =
 getTypesSelectionnes();
 
-const debutFiltre=
-debutSaisi ? new Date(debutSaisi) : null;
+const recherche =
+document
+.getElementById("rechercheArrete")
+.value
+.toLowerCase()
+.trim();
 
-const finFiltre=
-finSaisi ? new Date(finSaisi) : null;
+const debutFiltre =
+document.getElementById("dateDebut").value
+?
+new Date(
+document
+.getElementById("dateDebut")
+.value
+)
+:null;
+
+const finFiltre =
+document.getElementById("dateFin").value
+?
+new Date(
+document
+.getElementById("dateFin")
+.value
+)
+:null;
 
 const resultat={
 
@@ -257,37 +299,47 @@ type:"FeatureCollection",
 
 features:donnees.features.filter(f=>{
 
-const type=f.properties["Type"];
+const type =
+f.properties["Type"];
 
-if(!types.includes(type)){
+if(!types.includes(type))
+return false;
+
+const numero =
+String(
+f.properties["Arrêté"] || ""
+).toLowerCase();
+
+if(
+recherche &&
+!numero.includes(recherche)
+){
 return false;
 }
 
-const debut=
+const debut =
 parseDate(
 f.properties["Date début"]
 );
 
-let fin=
+let fin =
 parseDate(
 f.properties["Date fin"]
 );
 
 if(!fin){
 
-fin=new Date(
-2999,
-11,
-31
+fin =
+new Date(
+2999,11,31
 );
 
 }
 
-if(!debutFiltre && !finFiltre){
-return true;
-}
-
-if(debutFiltre && finFiltre){
+if(
+debutFiltre &&
+finFiltre
+){
 
 return (
 debut <= finFiltre &&
@@ -298,13 +350,17 @@ fin >= debutFiltre
 
 if(debutFiltre){
 
-return fin >= debutFiltre;
+return (
+fin >= debutFiltre
+);
 
 }
 
 if(finFiltre){
 
-return debut <= finFiltre;
+return (
+debut <= finFiltre
+);
 
 }
 
@@ -324,6 +380,18 @@ document
 .querySelectorAll(".typeFilter")
 .forEach(c=>c.checked=true);
 
+document
+.getElementById("dateDebut")
+.value="";
+
+document
+.getElementById("dateFin")
+.value="";
+
+document
+.getElementById("rechercheArrete")
+.value="";
+
 dessiner(donnees);
 
 }
@@ -336,12 +404,51 @@ fetch("Arretes circulation.geojson")
 
 donnees=data;
 
-dessiner(data);
+const aujourdHui =
+new Date();
+
+const actifs = {
+
+type:"FeatureCollection",
+
+features:data.features.filter(f=>{
+
+const debut =
+parseDate(
+f.properties["Date début"]
+);
+
+let fin =
+parseDate(
+f.properties["Date fin"]
+);
+
+if(!fin){
+
+fin =
+new Date(
+2999,11,31
+);
+
+}
+
+return (
+aujourdHui>=debut &&
+aujourdHui<=fin
+);
+
+})
+
+};
+
+dessiner(actifs);
 
 if(couche.getBounds().isValid()){
+
 map.fitBounds(
 couche.getBounds()
 );
+
 }
 
 });
@@ -357,18 +464,27 @@ filtrerPeriode
 
 });
 
-var legend=L.control({position:'bottomright'});
+const legend =
+L.control(
+{position:'bottomright'}
+);
 
 legend.onAdd=function(){
 
-var div=L.DomUtil.create('div','legend');
+const div =
+L.DomUtil.create(
+'div',
+'legend'
+);
 
 div.innerHTML=
 
-'<div><span class="color-box" style="background:#e60000"></span>Route barrée</div>' +
-'<div><span class="color-box" style="background:#ff8800"></span>Déviation</div>' +
-'<div><span class="color-box" style="background:#ffd700"></span>Circulation alternée</div>' +
-'<div><span class="color-box" style="background:#8000ff"></span>Circulation restreinte</div>';
+'<div><span class="color-box" style="background:#e60000"></span>Route barrée</div>'+
+'<div><span class="color-box" style="background:#00aa00"></span>Déviation</div>'+
+'<div><span class="color-box" style="background:#ffd700"></span>Circulation alternée</div>'+
+'<div><span class="color-box" style="background:#8000ff"></span>Circulation restreinte</div>'+
+'<hr>'+
+'<div><i>Trait pointillé = Demande en cours</i></div>';
 
 return div;
 
@@ -380,4 +496,3 @@ legend.addTo(map);
 
 </body>
 </html>
-`
