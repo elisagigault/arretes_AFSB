@@ -2,166 +2,382 @@
 <html lang="fr">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Carte des arrêtés AFSB</title>
+<title>Carte des arrêtés AFSB</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-        }
+<style>
 
-        #toolbar {
-            padding: 10px;
-            background: white;
-            border-bottom: 1px solid #ccc;
-        }
+html,body{
+margin:0;
+padding:0;
+height:100%;
+font-family:Arial,sans-serif;
+}
 
-        #map {
-            height: calc(100vh - 60px);
-        }
+#toolbar{
+padding:10px;
+background:white;
+border-bottom:1px solid #ccc;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+align-items:center;
+}
 
-        button {
-            margin-left: 5px;
-        }
-    </style>
+#map{
+height:calc(100vh - 110px);
+}
+
+.legend{
+background:white;
+padding:10px;
+line-height:22px;
+border-radius:5px;
+box-shadow:0 0 5px rgba(0,0,0,0.3);
+}
+
+.color-box{
+display:inline-block;
+width:15px;
+height:15px;
+margin-right:5px;
+vertical-align:middle;
+}
+
+.types{
+padding:5px;
+background:white;
+border-bottom:1px solid #ccc;
+}
+
+</style>
 </head>
 
 <body>
 
-    <div id="toolbar">
-        <label>Date de consultation :</label>
+<div id="toolbar">
 
-        <input type="date" id="dateSelect">
+<label>Date début :</label>
+<input type="date" id="dateDebut">
 
-        <button onclick="filtrerDate()">
-            Afficher les arrêtés actifs
-        </button>
+<label>Date fin :</label>
+<input type="date" id="dateFin">
 
-        <button onclick="afficherTous()">
-            Tout afficher
-        </button>
-    </div>
+<button onclick="filtrerPeriode()">
+Filtrer
+</button>
 
-    <div id="map"></div>
+<button onclick="afficherTous()">
+Tout afficher
+</button>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</div>
 
-    <script>
+<div class="types">
 
-        const map = L.map("map").setView([44.74, -0.53], 13);
+<label>
+<input type="checkbox" class="typeFilter"
+value="Circulation alternée" checked>
+Circulation alternée
+</label>
 
-        L.tileLayer(
-            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-            {
-                maxZoom: 20,
-                attribution: "Esri"
-            }
-        ).addTo(map);
+<label>
+<input type="checkbox" class="typeFilter"
+value="Route barrée" checked>
+Route barrée
+</label>
 
-        let donneesGeojson;
-        let couche;
+<label>
+<input type="checkbox" class="typeFilter"
+value="Déviation" checked>
+Déviation
+</label>
 
-        function parseDate(valeur) {
+<label>
+<input type="checkbox" class="typeFilter"
+value="Circulation restreinte" checked>
+Circulation restreinte
+</label>
 
-            if (!valeur) return null;
+</div>
 
-            if (valeur.includes("/")) {
+<div id="map"></div>
 
-                const morceaux = valeur.split("/");
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-                return new Date(
-                    Number(morceaux[2]),
-                    Number(morceaux[1]) - 1,
-                    Number(morceaux[0])
-                );
+<script>
 
-            }
+const map=L.map('map').setView([44.74,-0.53],13);
 
-            return new Date(valeur);
+L.tileLayer(
+'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+{
+maxZoom:20,
+attribution:'Esri'
+}
+).addTo(map);
 
-        }
+let donnees;
+let couche;
 
-        function afficherTous() {
+function parseDate(v){
 
-            if (couche) {
-                map.removeLayer(couche);
-            }
+if(!v) return null;
 
-            couche = L.geoJSON(donneesGeojson).addTo(map);
+if(v.includes('/')){
 
-        }
+let p=v.split('/');
 
-        function filtrerDate() {
+return new Date(
+Number(p[2]),
+Number(p[1])-1,
+Number(p[0])
+);
 
-            const valeurDate =
-                document.getElementById("dateSelect").value;
+}
 
-            if (!valeurDate) {
-                alert("Choisissez une date");
-                return;
-            }
+return new Date(v);
 
-            const dateChoisie = new Date(valeurDate);
+}
 
-            const resultat = {
-                type: "FeatureCollection",
-                features: donneesGeojson.features.filter(feature => {
+function getColor(type){
 
-                    const debut =
-                        parseDate(feature.properties["Date début"]);
+switch(type){
 
-                    const fin =
-                        parseDate(feature.properties["Date fin"]);
+case "Route barrée":
+return "#e60000";
 
-                    if (!debut || !fin) {
-                        return false;
-                    }
+case "Déviation":
+return "#ff8800";
 
-                    return (
-                        dateChoisie >= debut &&
-                        dateChoisie <= fin
-                    );
+case "Circulation alternée":
+return "#ffd700";
 
-                })
-            };
+case "Circulation restreinte":
+return "#8000ff";
 
-            if (couche) {
-                map.removeLayer(couche);
-            }
+default:
+return "#3388ff";
 
-            couche = L.geoJSON(resultat).addTo(map);
+}
 
-        }
+}
 
-        fetch("Arretes circulation.geojson")
-            .then(response => response.json())
-            .then(data => {
+function dessiner(data){
 
-                donneesGeojson = data;
+if(couche){
+map.removeLayer(couche);
+}
 
-                couche = L.geoJSON(data).addTo(map);
+couche=L.geoJSON(data,{
 
-                if (couche.getBounds().isValid()) {
-                    map.fitBounds(couche.getBounds());
-                }
+style:function(feature){
 
-            })
-            .catch(error => {
-                console.error(error);
-                alert("Impossible de charger le fichier GeoJSON");
-            });
+const type=feature.properties["Type"];
 
-    </script>
+return{
+color:getColor(type),
+fillColor:getColor(type),
+weight:4,
+fillOpacity:0.4
+};
+
+},
+
+onEachFeature:function(feature,layer){
+
+layer.bindTooltip(
+
+"<b>Arrêté :</b> "
++ (feature.properties["Arrêté"] || "") +
+
+"<br><b>Type :</b> "
++ (feature.properties["Type"] || "") +
+
+"<br><b>Début :</b> "
++ (feature.properties["Date début arrêté"]
+|| feature.properties["Date début"]
+|| "") +
+
+"<br><b>Fin :</b> "
++ (feature.properties["Date fin arrêté"]
+|| feature.properties["Date fin"]
+|| "Permanent") +
+
+"<br><b>Description :</b> "
++ (feature.properties["description"] || ""),
+
+{
+sticky:true
+}
+
+);
+
+}
+
+}).addTo(map);
+
+}
+
+function getTypesSelectionnes(){
+
+return Array.from(
+document.querySelectorAll(".typeFilter:checked")
+).map(c=>c.value);
+
+}
+
+function filtrerPeriode(){
+
+if(!donnees) return;
+
+const debutSaisi=
+document.getElementById("dateDebut").value;
+
+const finSaisi=
+document.getElementById("dateFin").value;
+
+const types=
+getTypesSelectionnes();
+
+const debutFiltre=
+debutSaisi ? new Date(debutSaisi) : null;
+
+const finFiltre=
+finSaisi ? new Date(finSaisi) : null;
+
+const resultat={
+
+type:"FeatureCollection",
+
+features:donnees.features.filter(f=>{
+
+const type=f.properties["Type"];
+
+if(!types.includes(type)){
+return false;
+}
+
+const debut=
+parseDate(
+f.properties["Date début"]
+);
+
+let fin=
+parseDate(
+f.properties["Date fin"]
+);
+
+if(!fin){
+
+fin=new Date(
+2999,
+11,
+31
+);
+
+}
+
+if(!debutFiltre && !finFiltre){
+return true;
+}
+
+if(debutFiltre && finFiltre){
+
+return (
+debut <= finFiltre &&
+fin >= debutFiltre
+);
+
+}
+
+if(debutFiltre){
+
+return fin >= debutFiltre;
+
+}
+
+if(finFiltre){
+
+return debut <= finFiltre;
+
+}
+
+return true;
+
+})
+
+};
+
+dessiner(resultat);
+
+}
+
+function afficherTous(){
+
+document
+.querySelectorAll(".typeFilter")
+.forEach(c=>c.checked=true);
+
+dessiner(donnees);
+
+}
+
+fetch("Arretes circulation.geojson")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+donnees=data;
+
+dessiner(data);
+
+if(couche.getBounds().isValid()){
+map.fitBounds(
+couche.getBounds()
+);
+}
+
+});
+
+document
+.querySelectorAll(".typeFilter")
+.forEach(c=>{
+
+c.addEventListener(
+"change",
+filtrerPeriode
+);
+
+});
+
+var legend=L.control({position:'bottomright'});
+
+legend.onAdd=function(){
+
+var div=L.DomUtil.create('div','legend');
+
+div.innerHTML=
+
+'<div><span class="color-box" style="background:#e60000"></span>Route barrée</div>' +
+'<div><span class="color-box" style="background:#ff8800"></span>Déviation</div>' +
+'<div><span class="color-box" style="background:#ffd700"></span>Circulation alternée</div>' +
+'<div><span class="color-box" style="background:#8000ff"></span>Circulation restreinte</div>';
+
+return div;
+
+};
+
+legend.addTo(map);
+
+</script>
 
 </body>
-
 </html>
-``
+`
