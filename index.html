@@ -6,40 +6,30 @@
 
 <title>Carte des arrêtés AFSB</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/gin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leafeight:100%;
+margin:0;
+font-family:Arial,sans-serif;
 }
 
-#toolbar {
-    padding: 10px;
-    background: white;
-    border-bottom: 1px solid #ccc;
+#toolbar{
+padding:10px;
+background:white;
+border-bottom:1px solid #ccc;
 }
 
-#map {
-    height: calc(100vh - 55px);
+#map{
+height:calc(100vh - 55px);
 }
-
-button {
-    padding: 6px 12px;
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-input[type="date"] {
-    padding: 5px;
-}
-
 </style>
+
 </head>
 
 <body>
 
 <div id="toolbar">
 
-<label><b>Date de consultation :</b></label>
+<label>Date de consultation :</label>
 
 <input type="date" id="dateSelect">
 
@@ -55,158 +45,73 @@ Tout afficher
 
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leafletscript>
+<script srckg.com/leaflet@1.9.4/dist/leaflet.jsscript>
 
-let map = L.map('map').setView([44.74, -0.53], 13);
+<script>
+
+const map = L.map('map').setView([44.74,-0.53],13);
 
 L.tileLayer(
 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
 {
-    attribution: 'Esri World Imagery',
-    maxZoom: 20
+maxZoom:20
 }
 ).addTo(map);
 
 let donneesGeojson;
-let coucheArretes;
-
-function convertirDate(valeur){
-
-    if(!valeur) return null;
-
-    if(valeur.includes('/')){
-
-        let morceaux = valeur.split('/');
-
-        return new Date(
-            morceaux[2],
-            morceaux[1]-1,
-            morceaux[0]
-        );
-    }
-
-    return new Date(valeur);
-}
-
-function creerPopup(feature){
-
-    let html = "";
-
-    for(let cle in feature.properties){
-
-        html +=
-        "<b>" + cle + "</b> : "
-        + feature.properties[cle]
-        + "<br>";
-    }
-
-    return html;
-}
-
-function styleFeature(feature){
-
-    return {
-        color: "#e60000",
-        weight: 4,
-        fillColor: "#ff7f00",
-        fillOpacity: 0.4
-    };
-}
-
-function dessinerCarte(geojson){
-
-    if(coucheArretes){
-        map.removeLayer(coucheArretes);
-    }
-
-    coucheArretes = L.geoJSON(geojson, {
-
-        style: styleFeature,
-
-        onEachFeature: function(feature, layer){
-
-            layer.bindPopup(
-                creerPopup(feature)
-            );
-
-        }
-
-    }).addTo(map);
-}
-
-fetch("Arretes circulation.geojson")
-
-.then(response => response.json())
-
-.then(data => {
-
-    donneesGeojson = data;
-
-    dessinerCarte(data);
-
-    if(coucheArretes.getBounds().isValid()){
-        map.fitBounds(
-            coucheArretes.getBounds()
-        );
-    }
-
-});
-
-function filtrerDate(){
-
-    let dateChoisie =
-        document.getElementById("dateSelect").value;
-
-    if(!dateChoisie){
-
-        alert("Veuillez sélectionner une date.");
-
-        return;
-    }
-
-    let dateTest = new Date(dateChoisie);
-
-    let resultat = {
-
-        type: "FeatureCollection",
-
-        features: donneesGeojson.features.filter(function(feature){
-
-            let debut =
-                convertirDate(
-                    feature.properties["Date début"]
-                );
-
-            let fin =
-                convertirDate(
-                    feature.properties["Date fin"]
-                );
-
-            if(!debut || !fin){
-                return false;
-            }
-
-            return (
-                dateTest >= debut &&
-                dateTest <= fin
-            );
-
-        })
-
-    };
-
-    dessinerCarte(resultat);
-}
+let couche;
 
 function afficherTous(){
 
-    dessinerCarte(
-        donneesGeojson
-    );
+if(couche){
+map.removeLayer(couche);
 }
+
+couche=L.geoJSON(donneesGeojson).addTo(map);
+
+}
+
+function filtrerDate(){
+
+const dateChoisie =
+new Date(document.getElementById("dateSelect").value);
+
+if(couche){
+map.removeLayer(couche);
+}
+
+const resultat={
+"type":"FeatureCollection",
+"features":donneesGeojson.features.filter(f=>{
+
+const debut =
+new Date(f.properties["Date début"]);
+
+const fin =
+new Date(f.properties["Date fin"]);
+
+return dateChoisie>=debut && dateChoisie<=fin;
+
+})
+};
+
+couche=L.geoJSON(resultat).addTo(map);
+
+}
+
+fetch("arr_t_s_afsb.geojson")
+.then(r=>r.json())
+.then(data=>{
+
+donneesGeojson=data;
+
+couche=L.geoJSON(data).addTo(map);
+
+map.fitBounds(couche.getBounds());
+
+});
 
 </script>
 
 </body>
-
 </html>
