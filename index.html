@@ -15,50 +15,124 @@ html,body{
 margin:0;
 padding:0;
 height:100%;
-font-family:Arial,sans-serif;
+font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-h2{
-margin:10px;
+#sidebar{
+
+position:absolute;
+top:10px;
+left:10px;
+
+width:330px;
+max-height:95vh;
+
+overflow:auto;
+
+z-index:1000;
+
+background:white;
+
+padding:15px;
+
+border-radius:8px;
+
+box-shadow:0 0 12px rgba(0,0,0,0.25);
+}
+
+#sidebar h2{
+margin-top:0;
+margin-bottom:10px;
 }
 
 #toolbar{
-padding:10px;
-background:white;
-border-bottom:1px solid #ccc;
+
 display:flex;
-flex-wrap:wrap;
-gap:10px;
-align-items:center;
+flex-direction:column;
+gap:8px;
+
+margin-bottom:15px;
 }
 
-#types{
-padding:10px;
-background:white;
-border-bottom:1px solid #ccc;
+#toolbar label{
+font-weight:bold;
+font-size:14px;
+}
+
+#toolbar input{
+padding:4px;
+}
+
+#toolbar button{
+
+padding:6px;
+cursor:pointer;
+}
+
+#listeArretes{
+
+font-size:14px;
+}
+
+.groupe{
+
+font-weight:bold;
+
+margin-top:12px;
+
+padding-top:5px;
+
+border-top:1px solid #ddd;
+}
+
+.arrete-item{
+
+padding:4px;
+
+cursor:pointer;
+
+border-radius:4px;
+}
+
+.arrete-item:hover{
+
+background:#f0f0f0;
 }
 
 #map{
-height:calc(100vh - 145px);
+
+height:100vh;
+width:100%;
 }
 
 .legend{
+
 background:white;
+
 padding:10px;
+
 line-height:22px;
+
 border-radius:5px;
+
 box-shadow:0 0 5px rgba(0,0,0,0.3);
 }
 
 .color-box{
+
 display:inline-block;
-width:15px;
-height:15px;
-margin-right:5px;
+
+width:14px;
+height:14px;
+
+margin-right:6px;
 }
 
-input[type=text]{
-width:140px;
+.type-filters{
+
+display:flex;
+flex-direction:column;
+gap:4px;
 }
 
 </style>
@@ -67,18 +141,23 @@ width:140px;
 
 <body>
 
+<div id="sidebar">
+
 <h2>Arrêtés des AFSB</h2>
 
 <div id="toolbar">
 
-<label>Date début :</label>
+<label>Date début</label>
 <input type="date" id="dateDebut">
 
-<label>Date fin :</label>
+<label>Date fin</label>
 <input type="date" id="dateFin">
 
-<label>Recherche arrêté :</label>
-<input type="text" id="rechercheArrete" placeholder="2026-0084">
+<label>Recherche arrêté</label>
+<input
+type="text"
+id="rechercheArrete"
+placeholder="Numéro ou texte">
 
 <button onclick="filtrerPeriode()">
 Filtrer
@@ -90,27 +169,49 @@ Tout afficher
 
 </div>
 
-<div id="types">
+<div id="periodeInfo"></div>
+
+<hr>
+
+<div class="type-filters">
 
 <label>
-<input type="checkbox" class="typeFilter" value="Circulation alternée" checked>
+<input type="checkbox"
+class="typeFilter"
+value="Circulation alternée"
+checked>
 Circulation alternée
 </label>
 
 <label>
-<input type="checkbox" class="typeFilter" value="Route barrée" checked>
+<input type="checkbox"
+class="typeFilter"
+value="Route barrée"
+checked>
 Route barrée
 </label>
 
 <label>
-<input type="checkbox" class="typeFilter" value="Déviation" checked>
+<input type="checkbox"
+class="typeFilter"
+value="Déviation"
+checked>
 Déviation
 </label>
 
 <label>
-<input type="checkbox" class="typeFilter" value="Circulation restreinte" checked>
+<input type="checkbox"
+class="typeFilter"
+value="Circulation restreinte"
+checked>
 Circulation restreinte
 </label>
+
+</div>
+
+<hr>
+
+<div id="listeArretes"></div>
 
 </div>
 
@@ -120,20 +221,20 @@ Circulation restreinte
 
 <script>
 
-const map = L.map('map').setView([44.74,-0.53],13);
+const map=L.map('map').setView([44.74,-0.53],13);
 
 L.tileLayer(
 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
 {
-maxZoom:20,
-attribution:'Esri'
+attribution:'Esri',
+maxZoom:20
 }
 ).addTo(map);
 
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
-opacity:0.35
+opacity:0.70
 }
 ).addTo(map);
 
@@ -142,8 +243,9 @@ let couche;
 
 function parseDate(v){
 
-if(!v || v==="NULL")
+if(!v || v==="NULL"){
 return null;
+}
 
 if(v.includes("/")){
 
@@ -166,20 +268,19 @@ function getColor(type){
 switch(type){
 
 case "Route barrée":
-return "#e60000";
+return "#d7191c";
 
 case "Déviation":
-return "#00aa00";
+return "#09a33d";
 
 case "Circulation alternée":
 return "#ffd700";
 
 case "Circulation restreinte":
-return "#8000ff";
+return "#7a3db8";
 
 default:
 return "#3388ff";
-
 }
 
 }
@@ -189,6 +290,101 @@ function getTypesSelectionnes(){
 return Array.from(
 document.querySelectorAll(".typeFilter:checked")
 ).map(c=>c.value);
+
+}
+
+function mettreAJourPanneau(data){
+
+const info =
+document.getElementById("periodeInfo");
+
+const liste =
+document.getElementById("listeArretes");
+
+liste.innerHTML="";
+
+const debut =
+document.getElementById("dateDebut").value
+|| "Aujourd'hui";
+
+const fin =
+document.getElementById("dateFin").value
+|| "Aujourd'hui";
+
+info.innerHTML=
+
+"<b>Période affichée</b><br>"
++ debut
++ " → "
++ fin
++ "<br><br><b>"
++ data.features.length
++ " arrêtés affichés</b>";
+
+const groupes={};
+
+data.features.forEach(f=>{
+
+const type=
+f.properties["Type"] || "Autres";
+
+if(!groupes[type]){
+groupes[type]=[];
+}
+
+groupes[type].push(f);
+
+});
+
+Object.keys(groupes)
+
+.sort()
+
+.forEach(type=>{
+
+const titre =
+document.createElement("div");
+
+titre.className="groupe";
+
+titre.innerHTML=
+"▼ " + type +
+" (" + groupes[type].length + ")";
+
+liste.appendChild(titre);
+
+groupes[type].forEach(feature=>{
+
+const item =
+document.createElement("div");
+
+item.className=
+"arrete-item";
+
+item.innerHTML=
+
+feature.properties["description"]
+||
+feature.properties["Arrêté"]
+||
+"Sans titre";
+
+item.onclick=function(){
+
+const z=
+L.geoJSON(feature);
+
+map.fitBounds(
+z.getBounds()
+);
+
+};
+
+liste.appendChild(item);
+
+});
+
+});
 
 }
 
@@ -205,21 +401,22 @@ style:function(feature){
 const type=
 feature.properties["Type"];
 
-const estDemande =
-feature.properties["Arrêté"] ===
+const estDemande=
+feature.properties["Arrêté"]===
 "Demande en cours";
 
 return{
 
 color:getColor(type),
+
 fillColor:getColor(type),
 
-weight:2,
+weight:1.5,
 
 fillOpacity:
 type==="Déviation"
-?0.15
-:0.25,
+?0.08
+:0.18,
 
 dashArray:
 estDemande
@@ -232,7 +429,21 @@ estDemande
 
 onEachFeature:function(feature,layer){
 
+let statut="";
+
+if(
+feature.properties["Arrêté"]===
+"Demande en cours"
+){
+
+statut =
+"<span style='color:red'><b>⚠ DEMANDE EN COURS</b></span><br>";
+
+}
+
 layer.bindTooltip(
+
+statut +
 
 "<b>Arrêté :</b> "
 +(feature.properties["Arrêté"]||"")
@@ -259,37 +470,35 @@ sticky:true
 
 }).addTo(map);
 
+mettreAJourPanneau(data);
+
 }
 
 function filtrerPeriode(){
 
-const types =
+const types=
 getTypesSelectionnes();
 
-const recherche =
+const recherche=
 document
 .getElementById("rechercheArrete")
 .value
 .toLowerCase()
 .trim();
 
-const debutFiltre =
+const debutFiltre=
 document.getElementById("dateDebut").value
 ?
 new Date(
-document
-.getElementById("dateDebut")
-.value
+document.getElementById("dateDebut").value
 )
 :null;
 
-const finFiltre =
+const finFiltre=
 document.getElementById("dateFin").value
 ?
 new Date(
-document
-.getElementById("dateFin")
-.value
+document.getElementById("dateFin").value
 )
 :null;
 
@@ -299,41 +508,39 @@ type:"FeatureCollection",
 
 features:donnees.features.filter(f=>{
 
-const type =
-f.properties["Type"];
-
-if(!types.includes(type))
-return false;
-
-const numero =
-String(
-f.properties["Arrêté"] || ""
-).toLowerCase();
-
 if(
-recherche &&
-!numero.includes(recherche)
+!types.includes(
+f.properties["Type"]
+)
 ){
 return false;
 }
 
-const debut =
+const texte=
+JSON.stringify(
+f.properties
+)
+.toLowerCase();
+
+if(
+recherche &&
+!texte.includes(recherche)
+){
+return false;
+}
+
+const debut=
 parseDate(
 f.properties["Date début"]
 );
 
-let fin =
+let fin=
 parseDate(
 f.properties["Date fin"]
 );
 
 if(!fin){
-
-fin =
-new Date(
-2999,11,31
-);
-
+fin=new Date(2999,11,31);
 }
 
 if(
@@ -345,23 +552,16 @@ return (
 debut <= finFiltre &&
 fin >= debutFiltre
 );
-
 }
 
 if(debutFiltre){
 
-return (
-fin >= debutFiltre
-);
-
+return fin >= debutFiltre;
 }
 
 if(finFiltre){
 
-return (
-debut <= finFiltre
-);
-
+return debut <= finFiltre;
 }
 
 return true;
@@ -376,21 +576,13 @@ dessiner(resultat);
 
 function afficherTous(){
 
+document.getElementById("dateDebut").value="";
+document.getElementById("dateFin").value="";
+document.getElementById("rechercheArrete").value="";
+
 document
 .querySelectorAll(".typeFilter")
 .forEach(c=>c.checked=true);
-
-document
-.getElementById("dateDebut")
-.value="";
-
-document
-.getElementById("dateFin")
-.value="";
-
-document
-.getElementById("rechercheArrete")
-.value="";
 
 dessiner(donnees);
 
@@ -404,28 +596,28 @@ fetch("Arretes circulation.geojson")
 
 donnees=data;
 
-const aujourdHui =
+const aujourdHui=
 new Date();
 
-const actifs = {
+const actifs={
 
 type:"FeatureCollection",
 
 features:data.features.filter(f=>{
 
-const debut =
+const debut=
 parseDate(
 f.properties["Date début"]
 );
 
-let fin =
+let fin=
 parseDate(
 f.properties["Date fin"]
 );
 
 if(!fin){
 
-fin =
+fin=
 new Date(
 2999,11,31
 );
@@ -443,12 +635,13 @@ aujourdHui<=fin
 
 dessiner(actifs);
 
-if(couche.getBounds().isValid()){
-
+if(
+couche &&
+couche.getBounds().isValid()
+){
 map.fitBounds(
 couche.getBounds()
 );
-
 }
 
 });
@@ -464,14 +657,14 @@ filtrerPeriode
 
 });
 
-const legend =
-L.control(
-{position:'bottomright'}
-);
+const legend=
+L.control({
+position:'bottomright'
+});
 
 legend.onAdd=function(){
 
-const div =
+const div=
 L.DomUtil.create(
 'div',
 'legend'
@@ -479,12 +672,12 @@ L.DomUtil.create(
 
 div.innerHTML=
 
-'<div><span class="color-box" style="background:#e60000"></span>Route barrée</div>'+
-'<div><span class="color-box" style="background:#00aa00"></span>Déviation</div>'+
+'<div><span class="color-box" style="background:#d7191c"></span>Route barrée</div>'+
+'<div><span class="color-box" style="background:#09a33d"></span>Déviation</div>'+
 '<div><span class="color-box" style="background:#ffd700"></span>Circulation alternée</div>'+
-'<div><span class="color-box" style="background:#8000ff"></span>Circulation restreinte</div>'+
+'<div><span class="color-box" style="background:#7a3db8"></span>Circulation restreinte</div>'+
 '<hr>'+
-'<div><i>Trait pointillé = Demande en cours</i></div>';
+'<div><i>Pointillés = Demande en cours</i></div>';
 
 return div;
 
