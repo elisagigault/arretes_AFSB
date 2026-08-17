@@ -893,7 +893,7 @@ aujourdHui.toISOString().split("T")[0];
 
 document.getElementById("dateFin").value =
 aujourdHui.toISOString().split("T")[0];
-const actifs={
+const visibles={
 
 type:"FeatureCollection",
 
@@ -908,6 +908,13 @@ let fin=
 parseDate(
 f.properties["Date fin"]
 );
+
+if(
+f.properties["Arrêté"] ===
+"Demande en cours"
+){
+return true;
+}
 
 if(!fin){
 
@@ -927,7 +934,7 @@ aujourdHui<=fin
 
 };
 
-dessiner(actifs);
+dessiner(visibles);
 
 if(
 couche &&
