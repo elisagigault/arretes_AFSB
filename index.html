@@ -20,8 +20,8 @@ font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 #sidebar{
 
 position:absolute;
-top:45px;
-left:55px;
+top:55px;
+left:10px;
 
 width:340px;
 max-height:88vh;
@@ -119,13 +119,17 @@ border-left:4px solid #999;
 
 .arrete-item{
 
-padding:6px 8px;
+padding:10px;
 
-margin:3px 0;
+margin:6px 0;
+
+background:#fafafa;
+
+border:1px solid #e5e5e5;
+
+border-radius:8px;
 
 cursor:pointer;
-
-border-radius:6px;
 
 transition:0.2s;
 }
@@ -134,7 +138,9 @@ transition:0.2s;
 
 background:#eaf3ff;
 
-transform:translateX(3px);
+transform:translateX(4px);
+
+box-shadow:0 2px 8px rgba(0,0,0,0.12);
 }
 
 #map{
@@ -325,6 +331,9 @@ return "#ffd700";
 case "Circulation restreinte":
 return "#7a3db8";
 
+case "Limitation vitesse":
+return "#0080ff";
+
 default:
 return "#3388ff";
 }
@@ -338,20 +347,7 @@ document.querySelectorAll(".typeFilter:checked")
 ).map(c=>c.value);
 
 }
-function formatDateFR(valeur){
 
-if(
-!valeur ||
-valeur==="Aujourd'hui"
-){
-return valeur;
-}
-
-const d = new Date(valeur);
-
-return d.toLocaleDateString("fr-FR");
-
-}
 
 function formatDateFR(valeur){
 
@@ -405,13 +401,16 @@ info.innerHTML =
 
 "<br><br><b>"
 
+const nbArretes = new Set(
+data.features.map(
+f => f.properties["Arrêté"]
+)
+).size;
+
 +
-
-data.features.length
-
+nbArretes
 +
-
-" entités affichées</b>";
+" arrêtés affichés";
 
 const groupes = {};
 
@@ -494,7 +493,54 @@ numero
 +
 '</div>';
 
+item.onclick = function(){
+
+const groupeLayer =
+L.featureGroup();
+
+features.forEach(function(f){
+
+groupeLayer.addLayer(
+L.geoJSON(f)
+);
+
+});
+
+if(
+groupeLayer.getBounds().isValid()
+){
+
+map.fitBounds(
+groupeLayer.getBounds(),
+{
+padding:[120,120]
+}
+);
+
+if(map.getZoom() > 16){
+map.setZoom(16);
+}
+
+}
+
+couche.eachLayer(function(layer){
+
+if(
+layer.feature &&
+layer.feature.properties &&
+layer.feature.properties["Arrêté"] === numero
+){
+
+layer.openPopup();
+
+}
+
+});
+
+};
+
 liste.appendChild(item);
+
 
 });
 
@@ -578,6 +624,25 @@ statut +
 sticky:true
 }
 
+);
+
+layer.bindPopup(
+statut +
+
+"<b>Arrêté :</b> "
++(feature.properties["Arrêté"]||"")
+
++"<br><b>Description :</b> "
++(feature.properties["description"]||"")
+
++"<br><b>Type :</b> "
++(feature.properties["Type"]||"")
+
++"<br><b>Date début :</b> "
++(feature.properties["Date début"]||"")
+
++"<br><b>Date fin :</b> "
++(feature.properties["Date fin"]||"")
 );
 
 }
@@ -713,6 +778,11 @@ donnees=data;
 const aujourdHui=
 new Date();
 
+document.getElementById("dateDebut").value =
+aujourdHui.toISOString().split("T")[0];
+
+document.getElementById("dateFin").value =
+aujourdHui.toISOString().split("T")[0];
 const actifs={
 
 type:"FeatureCollection",
@@ -790,6 +860,7 @@ div.innerHTML=
 '<div><span class="color-box" style="background:#09a33d"></span>Déviation</div>'+
 '<div><span class="color-box" style="background:#ffd700"></span>Circulation alternée</div>'+
 '<div><span class="color-box" style="background:#7a3db8"></span>Circulation restreinte</div>'+
+'<div><span class="color-box" style="background:#0080ff"></span>Limitation vitesse</div>'+
 '<hr>'+
 '<div><i>Pointillés = Demande en cours</i></div>';
 
