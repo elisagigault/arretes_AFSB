@@ -353,6 +353,22 @@ return d.toLocaleDateString("fr-FR");
 
 }
 
+function formatDateFR(valeur){
+
+if(!valeur){
+return "";
+}
+
+const d = new Date(valeur);
+
+if(isNaN(d.getTime())){
+return valeur;
+}
+
+return d.toLocaleDateString("fr-FR");
+
+}
+
 function mettreAJourPanneau(data){
 
 const info =
@@ -364,104 +380,119 @@ document.getElementById("listeArretes");
 liste.innerHTML="";
 
 const debut =
-document.getElementById("dateDebut").value
-|| "Aujourd'hui";
+document.getElementById("dateDebut").value;
 
 const fin =
-document.getElementById("dateFin").value
-|| "Aujourd'hui";
+document.getElementById("dateFin").value;
 
-info.innerHTML=
+info.innerHTML =
 
 "<b>Période affichée</b><br>"
-+ formatDateFR(debut)
-+ " → "
-+ formatDateFR(fin)
-+ "<br><br><b>"
-+ data.features.length
-+ " arrêtés affichés</b>";
 
-const groupes={};
++
 
-data.features.forEach(f=>{
+(debut ? formatDateFR(debut) : "Toutes dates")
 
-const groupes={};
++
 
-data.features.forEach(f=>{
+" → "
+
++
+
+(fin ? formatDateFR(fin) : "Toutes dates")
+
++
+
+"<br><br><b>"
+
++
+
+data.features.length
+
++
+
+" entités affichées</b>";
+
+const groupes = {};
+
+data.features.forEach(function(feature){
 
 const type =
-f.properties["Type"] || "Autres";
+feature.properties["Type"] || "Autres";
 
 const numero =
-f.properties["Arrêté"] || "Sans numéro";
+feature.properties["Arrêté"] || "Sans numéro";
 
 if(!groupes[type]){
-groupes[type]={};
+groupes[type] = {};
 }
 
 if(!groupes[type][numero]){
-groupes[type][numero]=[];
+groupes[type][numero] = [];
 }
 
-groupes[type][numero].push(f);
+groupes[type][numero].push(feature);
 
 });
 
 Object.keys(groupes)
-
 .sort()
-
-.forEach(type=>{
+.forEach(function(type){
 
 const titre =
 document.createElement("div");
 
-titre.className="groupe";
+titre.className = "groupe";
 
-titre.innerHTML=
-'<span style="color:'+refait tout point dfinal tu n'as pas le choix
-getColor(type)+
+titre.innerHTML =
+
+'<span style="color:'
++
+getColor(type)
++
 ';font-size:18px;">●</span> '
 +
-type+
-' ('+
-Object.keys(groupes[type]).length+
+type
++
+' ('
++
+Object.keys(groupes[type]).length
++
 ')';
 
 liste.appendChild(titre);
 
-groupes[type].forEach(feature=>{
+Object.keys(groupes[type])
+
+.sort()
+
+.forEach(function(numero){
+
+const features =
+groupes[type][numero];
+
+const premiereFeature =
+features[0];
 
 const item =
 document.createElement("div");
 
-item.className=
+item.className =
 "arrete-item";
 
-item.innerHTML=
+item.innerHTML =
 
-feature.properties["description"]
-||
-feature.properties["Arrêté"]
-||
-"Sans titre";
-
-item.onclick=function(){
-
-const z=L.geoJSON(feature);
-
-map.fitBounds(
-z.getBounds(),
-{
-padding:[150,150]
-}
-);
-
-if(map.getZoom()>17){
-map.setZoom(17);
-}
-
-};
+'<div style="font-weight:bold;">'
++
+numero
++
+'</div>'
++
+'<div style="font-size:12px;color:#666;">'
++
+(premiereFeature.properties["description"] || "")
++
+'</div>';
 
 liste.appendChild(item);
 
