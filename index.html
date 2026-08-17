@@ -116,7 +116,24 @@ border-radius:6px;
 
 border-left:4px solid #999;
 }
+.statut{
 
+margin-top:12px;
+
+padding:10px;
+
+background:#e9ecef;
+
+border-radius:8px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+user-select:none;
+
+border-left:5px solid #666;
+}
 .arrete-item{
 
 padding:10px;
@@ -365,6 +382,39 @@ return d.toLocaleDateString("fr-FR");
 
 }
 
+function getStatut(feature){
+
+const aujourdHui = new Date();
+
+const debut =
+parseDate(feature.properties["Date début"]);
+
+let fin =
+parseDate(feature.properties["Date fin"]);
+
+if(
+feature.properties["Arrêté"] ===
+"Demande en cours"
+){
+return "Demandes en cours";
+}
+
+if(!fin){
+fin = new Date(2999,11,31);
+}
+
+if(fin < aujourdHui){
+return "Arrêtés passés";
+}
+
+if(debut > aujourdHui){
+return "Arrêtés futurs";
+}
+
+return "Arrêtés en cours";
+
+}
+  
 function mettreAJourPanneau(data){
 
 const info =
@@ -416,9 +466,30 @@ const groupes = {};
 
 data.features.forEach(function(feature){
 
+const statut =
+getStatut(feature);
+
 const type =
 feature.properties["Type"] || "Autres";
 
+const numero =
+feature.properties["Arrêté"] || "Sans numéro";
+
+if(!groupes[statut]){
+groupes[statut] = {};
+}
+
+if(!groupes[statut][type]){
+groupes[statut][type] = {};
+}
+
+if(!groupes[statut][type][numero]){
+groupes[statut][type][numero] = [];
+}
+
+groupes[statut][type][numero].push(feature);
+
+});
 const numero =
 feature.properties["Arrêté"] || "Sans numéro";
 
@@ -437,7 +508,35 @@ groupes[type][numero].push(feature);
 Object.keys(groupes)
 .sort()
 .forEach(function(type){
+const titreStatut =
+document.createElement("div");
 
+titreStatut.className =
+"statut";
+
+titreStatut.innerHTML =
+"▶ " + statut;
+
+liste.appendChild(titreStatut);
+
+const contenu =
+document.createElement("div");
+
+contenu.style.display="none";
+
+liste.appendChild(contenu);
+
+titreStatut.onclick = function(){
+
+contenu.style.display =
+contenu.style.display==="none"
+?
+"block"
+:
+"none";
+
+};
+`
 const titre =
 document.createElement("div");
 
