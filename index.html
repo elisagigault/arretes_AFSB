@@ -571,40 +571,10 @@ Object.keys(groupes[statut])
 
 .sort()
 
-.forEach(function(type){
-
-const titre =
-document.createElement("div");
-
-titre.className =
-"groupe";
-
-titre.innerHTML =
-
-'<span style="color:'
-+
-getColor(type)
-+
-';font-size:18px;">●</span> '
-+
-type
-+
-' ('
-+
-Object.keys(groupes[statut][type]).length
-+
-')';
-
-contenuStatut.appendChild(titre);
-
-Object.keys(groupes[statut][type])
-
-.sort()
-
 .forEach(function(numero){
 
 const features =
-groupes[statut][type][numero];
+groupes[statut][numero];
 
 const premiereFeature =
 features[0];
@@ -615,20 +585,66 @@ document.createElement("div");
 item.className =
 "arrete-item";
 
+const types = [
+...new Set(
+features
+.map(f => f.properties["Type"])
+.filter(t => t && t !== "Déviation")
+)
+];
+
+let typesHtml = "";
+
+types.forEach(function(type){
+
+typesHtml +=
+
+'<span style="color:'
++
+getColor(type)
++
+';font-size:12px;font-weight:bold;">● '
++
+type
++
+'</span><br>';
+
+});
+
 item.innerHTML =
 
 '<div style="font-weight:bold;">'
+
 +
-numero
+
+(numero || "Demande")
+
 +
+
 '</div>'
 
 +
 
 '<div style="font-size:12px;color:#666;">'
+
 +
+
 (premiereFeature.properties["description"] || "")
+
 +
+
+'</div>'
+
++
+
+'<div style="margin-top:4px;">'
+
++
+
+typesHtml
+
++
+
 '</div>';
 
 item.onclick = function(){
@@ -666,7 +682,7 @@ couche.eachLayer(function(layer){
 if(
 layer.feature &&
 layer.feature.properties &&
-layer.feature.properties["Arrêté"] === numero
+(layer.feature.properties["Arrêté"] || "") === numero
 ){
 layer.openPopup();
 }
