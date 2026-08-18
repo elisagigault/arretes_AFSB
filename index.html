@@ -306,7 +306,17 @@ Occupation de voirie
 <script>
 
 const map=L.map('map').setView([44.74,-0.53],13);
+map.on("click", function(){
 
+if(coucheSelection){
+
+map.removeLayer(coucheSelection);
+coucheSelection = null;
+
+}
+
+});
+`
 L.tileLayer(
 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
 {
@@ -574,7 +584,21 @@ return;
 
 const blocStatut =
 document.createElement("div");
+if(statut==="📋 Demandes en cours"){
+blocStatut.style.background="#fff4d6";
+}
 
+if(statut==="🟢 Arrêtés en cours"){
+blocStatut.style.background="#e8f7e8";
+}
+
+if(statut==="🟡 Arrêtés futurs"){
+blocStatut.style.background="#fffbe0";
+}
+
+if(statut==="⚫ Arrêtés passés"){
+blocStatut.style.background="#f2f2f2";
+}
 blocStatut.className =
 "statut";
 
