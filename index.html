@@ -364,7 +364,34 @@ return "#3388ff";
 }
 
 }
+function getHighlightColor(type){
 
+switch(type){
+
+case "Route barrée":
+return "#ff0000";
+
+case "Déviation":
+return "#00ff66";
+
+case "Circulation alternée":
+return "#ff9900";
+
+case "Circulation restreinte":
+return "#cc00ff";
+
+case "Limitation vitesse":
+return "#00ccff";
+
+case "Occupation de voirie":
+return "#ff6600";
+
+default:
+return "#00ffff";
+
+}
+
+}
 function getTypesSelectionnes(){
 
 return Array.from(
