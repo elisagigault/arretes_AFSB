@@ -316,7 +316,8 @@ opacity:0.70
 
 let donnees;
 let couche;
-
+let coucheSelection = null;
+  
 function parseDate(v){
 
 if(!v || v==="NULL"){
@@ -684,7 +685,11 @@ typesHtml
 '</div>';
 
 item.onclick = function(){
+if(coucheSelection){
 
+map.removeLayer(coucheSelection);
+
+}
 const groupeLayer =
 L.featureGroup();
 
@@ -695,7 +700,23 @@ L.geoJSON(f)
 );
 
 });
+coucheSelection =
+L.geoJSON(features,{
 
+style:function(){
+
+return{
+
+color:"#00ffff",
+weight:6,
+opacity:1,
+fillOpacity:0
+
+};
+
+}
+
+}).addTo(map);
 if(
 groupeLayer.getBounds().isValid()
 ){
