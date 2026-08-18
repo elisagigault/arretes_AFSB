@@ -315,6 +315,15 @@ coucheSelection = null;
 
 }
 
+if(itemSelectionne){
+
+itemSelectionne.style.background = "#fafafa";
+itemSelectionne.style.borderColor = "#e5e5e5";
+
+itemSelectionne = null;
+
+}
+
 });
 
 L.tileLayer(
@@ -335,6 +344,7 @@ opacity:0.70
 let donnees;
 let couche;
 let coucheSelection = null;
+let itemSelectionne = null;
   
 function parseDate(v){
 
@@ -666,7 +676,7 @@ features[0];
 
 const item =
 document.createElement("div");
-
+item.dataset.numero = numero;
 item.className =
 "arrete-item";
 
@@ -730,8 +740,6 @@ numero.startsWith("demande-")
 +
 
 '</div>';
-  
-+
 
 item.innerHTML =
 
@@ -786,6 +794,18 @@ typesHtml
 '</div>';
 
 item.onclick = function(){
+if(itemSelectionne){
+
+itemSelectionne.style.background = "#fafafa";
+itemSelectionne.style.borderColor = "#e5e5e5";
+
+}
+
+item.style.background = "#dff0ff";
+item.style.borderColor = "#5aa9ff";
+
+itemSelectionne = item;
+  
 if(coucheSelection){
 
 map.removeLayer(coucheSelection);
@@ -937,8 +957,18 @@ statut =
 "<span style='color:red'><b>⚠ DEMANDE EN COURS</b></span><br>";
 
 }
-  layer.on("click", function(){
+layer.on("click", function(){
+if(itemSelectionne){
 
+itemSelectionne.style.background = "#fafafa";
+itemSelectionne.style.borderColor = "#e5e5e5";
+
+}
+
+item.style.background = "#dff0ff";
+item.style.borderColor = "#5aa9ff";
+
+itemSelectionne = item;
 if(coucheSelection){
 
 map.removeLayer(coucheSelection);
