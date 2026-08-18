@@ -281,6 +281,14 @@ checked>
 Circulation restreinte
 </label>
 
+<label>
+<input type="checkbox"
+class="typeFilter"
+value="Occupation de voirie"
+checked>
+Occupation de voirie
+</label>
+  
 </div>
 
 <hr>
@@ -358,6 +366,9 @@ return "#7a3db8";
 
 case "Limitation vitesse":
 return "#0080ff";
+
+case "Occupation de voirie":
+return "#ff8c00";
 
 default:
 return "#3388ff";
@@ -669,7 +680,7 @@ numero.startsWith("demande-")
 
 ?
 
-"📋 Demande"
+premiereFeature.properties["description"]
 
 :
 
@@ -764,9 +775,16 @@ return{
 color:getHighlightColor(
 features[0].properties["Type"]
 ),
+
+fillColor:getHighlightColor(
+features[0].properties["Type"]
+),
+
 weight:8,
-opacity:1,
-fillOpacity:0
+
+fillOpacity:0.25,
+
+opacity:1
 
 };
 
@@ -1147,6 +1165,7 @@ div.innerHTML=
 '<div><span class="color-box" style="background:#ff8800"></span>Circulation alternée</div>'+
 '<div><span class="color-box" style="background:#7a3db8"></span>Circulation restreinte</div>'+
 '<div><span class="color-box" style="background:#0080ff"></span>Limitation vitesse</div>'+
+'<div><span class="color-box" style="background:#ff8c00"></span>Occupation de voirie</div>'+
 '<hr>'+
 '<div><i>Pointillés = Demande en cours</i></div>';
 
