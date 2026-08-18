@@ -733,6 +733,24 @@ numero.startsWith("demande-")
   
 +
 
+item.innerHTML =
+
+'<div style="font-weight:bold;">'
+
++
+
+titreArrete
+
++
+
+'</div>'
+
++
+
+descriptionHtml
+
++
+
 '<div style="font-size:11px;color:#888;">'
 
 +
@@ -751,9 +769,6 @@ formatDateFR(
 premiereFeature.properties["Date fin"]
 )
 
-+
-
-'</div>'
 +
 
 '</div>'
@@ -801,11 +816,11 @@ fillColor:getHighlightColor(
 features[0].properties["Type"]
 ),
 
-weight:8,
+weight:5,
 
 fillOpacity:0.25,
 
-opacity:1
+opacity:1,
 dashArray:
 (
 !features[0].properties["Arrêté"] ||
@@ -945,7 +960,7 @@ fillColor:getHighlightColor(
 feature.properties["Type"]
 ),
 
-weight:8,
+weight:5,
 
 fillOpacity:
 feature.geometry.type.includes("Polygon")
