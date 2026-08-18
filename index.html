@@ -916,6 +916,55 @@ statut =
 "<span style='color:red'><b>⚠ DEMANDE EN COURS</b></span><br>";
 
 }
+  layer.on("click", function(){
+
+if(coucheSelection){
+
+map.removeLayer(coucheSelection);
+
+}
+
+coucheSelection =
+L.geoJSON(feature,{
+
+style:function(){
+
+return{
+
+color:getHighlightColor(
+feature.properties["Type"]
+),
+
+fillColor:getHighlightColor(
+feature.properties["Type"]
+),
+
+weight:8,
+
+fillOpacity:
+feature.geometry.type.includes("Polygon")
+? 0.25
+: 0,
+
+opacity:1,
+
+dashArray:
+(
+!feature.properties["Arrêté"] ||
+feature.properties["Arrêté"].trim()===""
+)
+?
+"8 8"
+:
+null
+
+};
+
+}
+
+}).addTo(map);
+
+});
 
 layer.bindTooltip(
 
