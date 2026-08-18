@@ -517,10 +517,7 @@ blocStatut.className =
 "statut";
 
 const nbStatut =
-Object.keys(groupes[statut])
-.reduce((n,type)=>
-n + Object.keys(groupes[statut][type]).length,
-0);
+Object.keys(groupes[statut]).length;
 
 blocStatut.innerHTML =
 
@@ -692,8 +689,6 @@ layer.openPopup();
 };
 
 contenuStatut.appendChild(item);
-
-});
 
 });
 
