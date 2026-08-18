@@ -618,25 +618,53 @@ type
 
 });
 
+const titreArrete =
+
+numero.startsWith("demande-")
+
+?
+
+"📋 Demande"
+
+:
+
+numero;
+
 item.innerHTML =
 
 '<div style="font-weight:bold;">'
 
 +
 
-numero.startsWith("demande-")
-
-?
-
-premiereFeature.properties["description"]
-
-:
-
-numero
+titreArrete
 
 +
 
 '</div>'
+
++
+
+'<div style="font-size:12px;color:#666;">'
+
++
+
+(premiereFeature.properties["description"] || "")
+
++
+
+'</div>'
+
++
+
+'<div style="margin-top:4px;">'
+
++
+
+typesHtml
+
++
+
+'</div>';
 
 +
 
@@ -692,15 +720,17 @@ map.setZoom(16);
 
 }
 
+features.forEach(function(f){
+
 couche.eachLayer(function(layer){
 
-if(
-layer.feature &&
-layer.feature.properties &&
-(layer.feature.properties["Arrêté"] || "") === numero
-){
+if(layer.feature === f){
+
 layer.openPopup();
+
 }
+
+});
 
 });
 
@@ -974,8 +1004,13 @@ f.properties["Date fin"]
 );
 
 if(
-f.properties["Arrêté"] ===
-"Demande en cours"
+
+!f.properties["Arrêté"]
+
+||
+
+f.properties["Arrêté"].trim()===""
+
 ){
 return true;
 }
