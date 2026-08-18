@@ -601,7 +601,11 @@ features
 ];
 
 let typesHtml = "";
+if(types.length === 0){
 
+return;
+
+}
 types.forEach(function(type){
 
 typesHtml +=
