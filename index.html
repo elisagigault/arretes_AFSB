@@ -492,9 +492,19 @@ data.features.forEach(function(feature){
 
 const statut =
 getStatut(feature);
-
 const numero =
-feature.properties["Arrêté"] || "";
+
+feature.properties["Arrêté"] &&
+feature.properties["Arrêté"].trim() !== ""
+
+?
+
+feature.properties["Arrêté"]
+
+:
+
+"demande-" +
+(feature.properties["description"] || "");
 
 if(!groupes[statut]){
 groupes[statut] = {};
@@ -614,7 +624,15 @@ item.innerHTML =
 
 +
 
-(numero || "Demande")
+numero.startsWith("demande-")
+
+?
+
+premiereFeature.properties["description"]
+
+:
+
+numero
 
 +
 
