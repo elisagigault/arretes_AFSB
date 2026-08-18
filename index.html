@@ -493,25 +493,18 @@ data.features.forEach(function(feature){
 const statut =
 getStatut(feature);
 
-const type =
-feature.properties["Type"] || "Autres";
-
 const numero =
-feature.properties["Arrêté"] || "Sans numéro";
+feature.properties["Arrêté"] || "";
 
 if(!groupes[statut]){
 groupes[statut] = {};
 }
 
-if(!groupes[statut][type]){
-groupes[statut][type] = {};
+if(!groupes[statut][numero]){
+groupes[statut][numero] = [];
 }
 
-if(!groupes[statut][type][numero]){
-groupes[statut][type][numero] = [];
-}
-
-groupes[statut][type][numero].push(feature);
+groupes[statut][numero].push(feature);
 
 });
 
@@ -530,6 +523,15 @@ n + Object.keys(groupes[statut][type]).length,
 0);
 
 blocStatut.innerHTML =
+
+statut === "🟢 Arrêtés en cours"
+
+?
+
+"▼ " + statut + " (" + nbStatut + ")"
+
+:
+
 "▶ " + statut + " (" + nbStatut + ")";
 
 liste.appendChild(blocStatut);
@@ -546,12 +548,22 @@ liste.appendChild(contenuStatut);
 
 blocStatut.onclick = function(){
 
-contenuStatut.style.display =
-contenuStatut.style.display === "none"
-?
-"block"
-:
-"none";
+if(contenuStatut.style.display === "none"){
+
+contenuStatut.style.display = "block";
+
+blocStatut.innerHTML =
+"▼ " + statut + " (" + nbStatut + ")";
+
+}
+else{
+
+contenuStatut.style.display = "none";
+
+blocStatut.innerHTML =
+"▶ " + statut + " (" + nbStatut + ")";
+
+}
 
 };
 
