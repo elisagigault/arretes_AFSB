@@ -518,7 +518,20 @@ groupes[statut][numero].push(feature);
 
 });
 
-Object.keys(groupes).forEach(function(statut){
+const ordreStatuts = [
+
+"📋 Demandes en cours",
+"🟢 Arrêtés en cours",
+"🟡 Arrêtés futurs",
+"⚫ Arrêtés passés"
+
+];
+
+ordreStatuts.forEach(function(statut){
+
+if(!groupes[statut]){
+return;
+}
 
 const blocStatut =
 document.createElement("div");
@@ -645,30 +658,6 @@ titreArrete
 +
 
 '</div>'
-
-+
-
-'<div style="font-size:12px;color:#666;">'
-
-+
-
-(premiereFeature.properties["description"] || "")
-
-+
-
-'</div>'
-
-+
-
-'<div style="margin-top:4px;">'
-
-+
-
-typesHtml
-
-+
-
-'</div>';
 
 +
 
