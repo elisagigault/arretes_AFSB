@@ -965,10 +965,22 @@ itemSelectionne.style.borderColor = "#e5e5e5";
 
 }
 
-item.style.background = "#dff0ff";
-item.style.borderColor = "#5aa9ff";
+const itemTrouve = document.querySelector(
+'[data-numero="' +
+(feature.properties["Arrêté"] || ("demande-" + feature.properties["description"]))
++
+'"]'
+);
 
-itemSelectionne = item;
+if(itemTrouve){
+
+itemTrouve.style.background = "#dff0ff";
+itemTrouve.style.borderColor = "#5aa9ff";
+
+itemSelectionne = itemTrouve;
+
+}
+
 if(coucheSelection){
 
 map.removeLayer(coucheSelection);
