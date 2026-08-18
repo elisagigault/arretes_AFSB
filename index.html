@@ -399,9 +399,12 @@ parseDate(feature.properties["Date début"]);
 let fin =
 parseDate(feature.properties["Date fin"]);
 
+const numero =
+feature.properties["Arrêté"];
+
 if(
-feature.properties["Arrêté"] ===
-"Demande en cours"
+!numero ||
+numero.trim()===""
 ){
 return "📋 Demandes en cours";
 }
@@ -439,8 +442,19 @@ const fin =
 document.getElementById("dateFin").value;
 
 const nbArretes = new Set(
-data.features.map(
-f => f.properties["Arrêté"]
+data.features.map(f =>
+
+f.properties["Arrêté"] &&
+f.properties["Arrêté"].trim() !== ""
+
+?
+
+f.properties["Arrêté"]
+
+:
+
+"demande-" + f.id
+
 )
 ).size;
 
@@ -670,10 +684,14 @@ style:function(feature){
 
 const type=
 feature.properties["Type"];
+const estDemande =
 
-const estDemande=
-feature.properties["Arrêté"]===
-"Demande en cours";
+!feature.properties["Arrêté"]
+
+||
+
+feature.properties["Arrêté"].trim()==="";
+
 
 return{
 
@@ -702,8 +720,13 @@ onEachFeature:function(feature,layer){
 let statut="";
 
 if(
-feature.properties["Arrêté"]===
-"Demande en cours"
+
+!feature.properties["Arrêté"]
+
+||
+
+feature.properties["Arrêté"].trim()===""
+
 ){
 
 statut =
