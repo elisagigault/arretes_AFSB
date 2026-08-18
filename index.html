@@ -351,7 +351,7 @@ case "Déviation":
 return "#09a33d";
 
 case "Circulation alternée":
-return "#ffd700";
+return "#ff8800";
 
 case "Circulation restreinte":
 return "#7a3db8";
@@ -698,6 +698,33 @@ titreArrete
 +
 
 '</div>'
+  
++
+
+'<div style="font-size:11px;color:#888;">'
+
++
+
+formatDateFR(
+premiereFeature.properties["Date début"]
+)
+
++
+
+' → '
+
++
+
+formatDateFR(
+premiereFeature.properties["Date fin"]
+)
+
++
+
+'</div>'
++
+
+'</div>'
 
 +
 
@@ -734,8 +761,10 @@ style:function(){
 
 return{
 
-color:"#00ffff",
-weight:6,
+color:getHighlightColor(
+features[0].properties["Type"]
+),
+weight:8,
 opacity:1,
 fillOpacity:0
 
@@ -1115,7 +1144,7 @@ div.innerHTML=
 
 '<div><span class="color-box" style="background:#d7191c"></span>Route barrée</div>'+
 '<div><span class="color-box" style="background:#09a33d"></span>Déviation</div>'+
-'<div><span class="color-box" style="background:#ffd700"></span>Circulation alternée</div>'+
+'<div><span class="color-box" style="background:#ff8800"></span>Circulation alternée</div>'+
 '<div><span class="color-box" style="background:#7a3db8"></span>Circulation restreinte</div>'+
 '<div><span class="color-box" style="background:#0080ff"></span>Limitation vitesse</div>'+
 '<hr>'+
