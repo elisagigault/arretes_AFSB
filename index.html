@@ -23,8 +23,8 @@ position:absolute;
 top:75px;
 left:10px;
 
-width:340px;
-max-height:88vh;
+width:360px;
+max-height:85vh;
 
 overflow:hidden;
 
@@ -77,12 +77,28 @@ display:flex;
 flex-direction:column;
 }
 
-#toolbar{
+.date-row{
+display:flex;
+gap:8px;
+}
 
+.date-col{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+.button-row{
+display:flex;
+gap:8px;
+}
+
+.button-row button{
+flex:1;
+}
+#toolbar{
 display:flex;
 flex-direction:column;
 gap:8px;
-
 margin-bottom:15px;
 }
 
@@ -113,13 +129,17 @@ position:relative;
 
 min-height:0;
 }
-
+#periodeInfo{
+font-size:14px;
+line-height:1.4;
+margin-bottom:8px;
+}
 .statut{
 
 position:sticky;
 top:0;
 z-index:20;
-
+box-shadow:0 2px 4px rgba(0,0,0,0.08);
 margin-top:12px;
 
 padding:10px;
@@ -234,17 +254,27 @@ gap:4px;
 
 <div id="toolbar">
 
+<div class="date-row">
+
+<div class="date-col">
 <label>Date début</label>
 <input type="date" id="dateDebut">
+</div>
 
+<div class="date-col">
 <label>Date fin</label>
 <input type="date" id="dateFin">
+</div>
+
+</div>
 
 <label>Recherche arrêté</label>
 <input
 type="text"
 id="rechercheArrete"
 placeholder="Numéro ou texte">
+
+<div class="button-row">
 
 <button onclick="filtrerPeriode()">
 Filtrer
@@ -258,13 +288,17 @@ Tout afficher
 
 </div>
 
+</div>
+
 <div id="sidebar-content">
 
 <div id="periodeInfo"></div>
 
-<hr>
+<div id="typesHeader" class="statut" style="margin-top:8px;">
+▼ Types d'arrêtés
+</div>
 
-<div class="type-filters">
+<div id="typesContainer" class="type-filters">
 
 <label>
 <input type="checkbox"
@@ -308,7 +342,6 @@ Occupation de voirie
   
 </div>
 
-<hr>
 
 <div id="listeArretes"></div>
 
@@ -537,7 +570,11 @@ f.properties["Arrêté"]
 
 info.innerHTML =
 
-"<b>Période affichée</b><br>"
+"<b>" + nbArretes + " arrêtés affichés</b><br>"
+
++
+
+"📅 "
 
 +
 
@@ -549,19 +586,7 @@ info.innerHTML =
 
 +
 
-(fin ? formatDateFR(fin) : "Toutes dates")
-
-+
-
-"<br><br><b>"
-
-+
-
-nbArretes
-
-+
-
-" arrêtés affichés</b>";
+(fin ? formatDateFR(fin) : "Toutes dates");
 
 const groupes = {};
 
@@ -1343,7 +1368,52 @@ return div;
 };
 
 legend.addTo(map);
+const typesHeader =
+document.getElementById("typesHeader");
 
+const typesContainer =
+document.getElementById("typesContainer");
+
+function majTitreTypes(){
+
+const nb =
+document.querySelectorAll(".typeFilter:checked").length;
+
+const symbole =
+typesContainer.style.display === "none"
+? "▶"
+: "▼";
+
+typesHeader.innerHTML =
+symbole + " Types d'arrêtés (" + nb + "/5)";
+}
+
+majTitreTypes();
+
+typesHeader.onclick = function(){
+
+if(typesContainer.style.display === "none"){
+
+typesContainer.style.display = "flex";
+
+}
+else{
+
+typesContainer.style.display = "none";
+
+}
+
+majTitreTypes();
+
+};
+
+document
+.querySelectorAll(".typeFilter")
+.forEach(c => {
+
+c.addEventListener("change", majTitreTypes);
+
+});
 </script>
 
 </body>
