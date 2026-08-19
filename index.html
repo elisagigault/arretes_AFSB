@@ -319,6 +319,7 @@ if(itemSelectionne){
 
 itemSelectionne.style.background = "#fafafa";
 itemSelectionne.style.borderColor = "#e5e5e5";
+itemSelectionne.style.boxShadow = "none";
 
 itemSelectionne = null;
 
@@ -798,11 +799,13 @@ if(itemSelectionne){
 
 itemSelectionne.style.background = "#fafafa";
 itemSelectionne.style.borderColor = "#e5e5e5";
+itemSelectionne.style.boxShadow = "none";
 
 }
 
 item.style.background = "#dff0ff";
 item.style.borderColor = "#5aa9ff";
+item.style.boxShadow = "0 0 0 2px #5aa9ff";
 
 itemSelectionne = item;
   
@@ -965,19 +968,35 @@ itemSelectionne.style.borderColor = "#e5e5e5";
 
 }
 
+const numeroRecherche =
+
+feature.properties["Arrêté"] &&
+feature.properties["Arrêté"].trim() !== ""
+
+?
+
+feature.properties["Arrêté"]
+
+:
+
+"demande-" + (feature.properties["description"] || "");
+
 const itemTrouve = document.querySelector(
-'[data-numero="' +
-(feature.properties["Arrêté"] || ("demande-" + feature.properties["description"]))
-+
-'"]'
+'[data-numero="' + numeroRecherche + '"]'
 );
 
 if(itemTrouve){
 
 itemTrouve.style.background = "#dff0ff";
 itemTrouve.style.borderColor = "#5aa9ff";
+itemTrouve.style.boxShadow = "0 0 0 2px #5aa9ff";
 
 itemSelectionne = itemTrouve;
+
+itemTrouve.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+});
 
 }
 
