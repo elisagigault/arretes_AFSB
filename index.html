@@ -647,7 +647,7 @@ feature.properties["Arrêté"]
 :
 
 "demande-" +
-(feature.properties["description"] || "");
+(feature.properties["Titre"] || "");
 
 if(!groupes[statut]){
 groupes[statut] = {};
@@ -798,7 +798,7 @@ numero.startsWith("demande-")
 
 ?
 
-premiereFeature.properties["description"]
+premiereFeature.properties["Titre"]
 
 :
 
@@ -817,7 +817,7 @@ numero.startsWith("demande-")
 
 +
 
-(premiereFeature.properties["description"] || "")
+(premiereFeature.properties["Titre"] || "")
 
 +
 
@@ -1060,7 +1060,7 @@ feature.properties["Arrêté"]
 
 :
 
-"demande-" + (feature.properties["description"] || "");
+"demande-" + (feature.properties["Titre"] || "");
 
 const itemTrouve = document.querySelector(
 '[data-numero="' + numeroRecherche + '"]'
@@ -1135,8 +1135,8 @@ statut +
 "<b>Arrêté :</b> "
 +(feature.properties["Arrêté"]||"")
 
-+"<br><b>Description :</b> "
-+(feature.properties["description"]||"")
+"<b>Titre :</b> "
++(feature.properties["Titre"]||"")
 
 +"<br><b>Type :</b> "
 +(feature.properties["Type"]||"")
@@ -1154,27 +1154,101 @@ sticky:true
 );
 
 layer.bindPopup(
-statut +
 
-"<b>Arrêté :</b> "
-+(feature.properties["Arrêté"]||"")
+'<div style="min-width:260px;">'
 
-+"<br><b>Description :</b> "
-+(feature.properties["description"]||"")
++
 
-+"<br><b>Type :</b> "
-+(feature.properties["Type"]||"")
+'<div style="font-size:18px;font-weight:bold;">'
 
-+"<br><b>Date début :</b> "
-+(feature.properties["Date début"]||"")
++ (feature.properties["Arrêté"] || "Demande en cours")
 
-+"<br><b>Date fin :</b> "
-+(feature.properties["Date fin"]||"")
++
+
+'</div>'
+
++
+
+'<div style="font-size:15px;font-weight:600;margin-top:4px;">'
+
++ (feature.properties["Titre"] || "")
+
++
+
+'</div>'
+
++
+
+'<div style="margin-top:8px;color:'
++ getColor(feature.properties["Type"])
++ ';font-weight:bold;">● '
+
++ (feature.properties["Type"] || "")
+
++
+
+'</div>'
+
++
+
+'<div style="font-size:12px;color:#666;margin-top:4px;">'
+
++ formatDateFR(feature.properties["Date début"])
+
++ ' → '
+
++ formatDateFR(feature.properties["Date fin"])
+
++
+
+'</div>'
+
++
+
+'<hr style="margin:10px 0;">'
+
++
+
+'<div style="font-size:13px;">'
+
++ (feature.properties["Détail"] || "")
+
++
+
+'</div>'
+
++
+
+'</div>',
+
+{
+maxWidth:320
+}
+
 );
 
 }
 
 }).addTo(map);
+
+[
+"Déviation",
+"Circulation restreinte",
+"Circulation alternée",
+"Route barrée"
+].forEach(function(typeRecherche){
+
+couche.eachLayer(function(layer){
+
+if(layer.feature.properties["Type"] === typeRecherche){
+
+layer.bringToFront();
+
+}
+
+});
+
+});
 
 mettreAJourPanneau(data);
 
