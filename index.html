@@ -396,8 +396,10 @@ if(itemSelectionne){
 itemSelectionne.style.background = "#fafafa";
 itemSelectionne.style.borderColor = "#e5e5e5";
 itemSelectionne.style.boxShadow = "none";
+itemSelectionne.style.transform = "translateX(0)";
 
 itemSelectionne = null;
+
 
 }
 
@@ -499,6 +501,27 @@ return "#00ffff";
 
 }
 
+}
+function getLargeurSelonZoom(type){
+
+    const zoom = map.getZoom();
+
+    if(type === "Déviation"){
+
+        if(zoom <= 10) return 4;
+        if(zoom <= 11) return 3;
+        if(zoom <= 12) return 2.5;
+        if(zoom <= 13) return 2;
+
+        return 1.5;
+    }
+
+        if(zoom <= 10) return 6;
+        if(zoom <= 11) return 5;
+        if(zoom <= 12) return 4;
+        if(zoom <= 13) return 3;
+
+        return 2;
 }
 function getTypesSelectionnes(){
 
@@ -881,12 +904,15 @@ if(itemSelectionne){
 itemSelectionne.style.background = "#fafafa";
 itemSelectionne.style.borderColor = "#e5e5e5";
 itemSelectionne.style.boxShadow = "none";
+itemSelectionne.style.transform = "translateX(0)";
 
 }
 
-item.style.background = "#dff0ff";
+item.style.background = "#eaf3ff";
 item.style.borderColor = "#5aa9ff";
-item.style.boxShadow = "0 0 0 2px #5aa9ff";
+item.style.boxShadow = "0 2px 8px rgba(0,0,0,0.12)";
+item.style.transform = "translateX(4px)";
+
 
 itemSelectionne = item;
   
@@ -1007,7 +1033,8 @@ color:getColor(type),
 
 fillColor:getColor(type),
 
-weight:1.5,
+weight:getLargeurSelonZoom(type),
+
 
 fillOpacity:
 type==="Déviation"
@@ -1068,9 +1095,10 @@ const itemTrouve = document.querySelector(
 
 if(itemTrouve){
 
-itemTrouve.style.background = "#dff0ff";
+itemTrouve.style.background = "#eaf3ff";
 itemTrouve.style.borderColor = "#5aa9ff";
-itemTrouve.style.boxShadow = "0 0 0 2px #5aa9ff";
+itemTrouve.style.boxShadow = "0 2px 8px rgba(0,0,0,0.12)";
+itemTrouve.style.transform = "translateX(4px)";
 
 itemTrouve.scrollIntoView({
   behavior: "smooth",
@@ -1445,6 +1473,24 @@ return div;
 };
 
 legend.addTo(map);
+map.on("zoomend", function(){
+
+    if(!couche){
+        return;
+    }
+
+    couche.eachLayer(function(layer){
+
+        const type =
+        layer.feature.properties["Type"];
+
+        layer.setStyle({
+            weight:getLargeurSelonZoom(type)
+        });
+
+    });
+
+});
 const typesHeader =
 document.getElementById("typesHeader");
 
