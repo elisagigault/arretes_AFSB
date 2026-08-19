@@ -67,11 +67,14 @@ border-bottom:1px solid #ddd;
 
 #sidebar-content{
 
-overflow-y:auto;
+overflow:hidden;
 
 padding-top:10px;
 
 flex-grow:1;
+
+display:flex;
+flex-direction:column;
 }
 
 #toolbar{
@@ -102,9 +105,13 @@ cursor:pointer;
 
 font-size:14px;
 
-overflow-y:auto;
 flex-grow:1;
+
+overflow-y:auto;
+
 position:relative;
+
+min-height:0;
 }
 
 .statut{
