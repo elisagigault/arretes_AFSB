@@ -142,7 +142,7 @@ border-left:4px solid #5aa9ff;
 
 border-radius:8px;
 
-margin-bottom:12px;
+margin-bottom:2px;
 
 }
 .statut{
@@ -250,9 +250,22 @@ display:flex;
 flex-direction:column;
 gap:4px;
 
-margin-bottom:14px;
+margin-bottom:8px;
 }
+#typesHeader{
 
+text-align:center;
+
+margin-top:2px !important;
+
+margin-bottom:8px;
+
+border-left:none;
+
+font-size:15px;
+font-weight:600;
+
+}
 </style>
 
 </head>
@@ -307,7 +320,7 @@ Tout afficher
 
 <div id="periodeInfo"></div>
 
-<div id="typesHeader" class="statut" style="margin-top:8px;">
+<div id="typesHeader" class="statut">
 ▼ Types d'arrêtés
 </div>
 
@@ -496,6 +509,25 @@ document.querySelectorAll(".typeFilter:checked")
 }
 
 
+function getNumeroSemaine(date){
+
+const d = new Date(date);
+
+d.setHours(0,0,0,0);
+
+d.setDate(
+d.getDate() + 4 - (d.getDay() || 7)
+);
+
+const debutAnnee =
+new Date(d.getFullYear(),0,1);
+
+return Math.ceil(
+(((d - debutAnnee) / 86400000) + 1) / 7
+);
+
+}
+
 function formatDateFR(valeur){
 
 if(!valeur){
@@ -583,23 +615,19 @@ f.properties["Arrêté"]
 
 info.innerHTML =
 
-"<b>" + nbArretes + " arrêtés affichés</b><br>"
-
-+
-
-"📅 "
-
-+
-
-(debut ? formatDateFR(debut) : "Toutes dates")
-
-+
-
-" → "
-
-+
-
-(fin ? formatDateFR(fin) : "Toutes dates");
+"<b>" + nbArretes + " arrêtés affichés</b><br>" +
+"📅 " +
+(
+debut
+? "S" + getNumeroSemaine(debut) + " • " + formatDateFR(debut)
+: "Toutes dates"
+) +
+" → " +
+(
+fin
+? "S" + getNumeroSemaine(fin) + " • " + formatDateFR(fin)
+: "Toutes dates"
+);
 
 const groupes = {};
 
