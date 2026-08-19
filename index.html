@@ -766,7 +766,7 @@ const types = [
 ...new Set(
 features
 .map(f => f.properties["Type"])
-.filter(t => t && t !== "Déviation")
+.filter(t => t)
 )
 ];
 
@@ -1135,7 +1135,7 @@ statut +
 "<b>Arrêté :</b> "
 +(feature.properties["Arrêté"]||"")
 
-"<b>Titre :</b> "
++"<br><b>Titre :</b> "
 +(feature.properties["Titre"]||"")
 
 +"<br><b>Type :</b> "
@@ -1154,78 +1154,40 @@ sticky:true
 );
 
 layer.bindPopup(
+'<div style="min-width:260px;">' +
 
-'<div style="min-width:260px;">'
+'<div style="font-size:18px;font-weight:bold;">' +
+(feature.properties["Arrêté"] || "Demande en cours") +
+'</div>' +
 
-+
+'<div style="font-size:15px;font-weight:600;margin-top:4px;">' +
+(feature.properties["Titre"] || "") +
+'</div>' +
 
-'<div style="font-size:18px;font-weight:bold;">'
+'<div style="margin-top:8px;color:' +
+getColor(feature.properties["Type"]) +
+';font-weight:bold;">● ' +
+(feature.properties["Type"] || "") +
+'</div>' +
 
-+ (feature.properties["Arrêté"] || "Demande en cours")
+'<div style="font-size:12px;color:#666;margin-top:4px;">' +
+formatDateFR(feature.properties["Date début"]) +
+' → ' +
+formatDateFR(feature.properties["Date fin"]) +
+'</div>' +
 
-+
+'<hr style="margin:10px 0;">' +
 
-'</div>'
-
-+
-
-'<div style="font-size:15px;font-weight:600;margin-top:4px;">'
-
-+ (feature.properties["Titre"] || "")
-
-+
-
-'</div>'
-
-+
-
-'<div style="margin-top:8px;color:'
-+ getColor(feature.properties["Type"])
-+ ';font-weight:bold;">● '
-
-+ (feature.properties["Type"] || "")
-
-+
-
-'</div>'
-
-+
-
-'<div style="font-size:12px;color:#666;margin-top:4px;">'
-
-+ formatDateFR(feature.properties["Date début"])
-
-+ ' → '
-
-+ formatDateFR(feature.properties["Date fin"])
-
-+
-
-'</div>'
-
-+
-
-'<hr style="margin:10px 0;">'
-
-+
-
-'<div style="font-size:13px;">'
-
-+ (feature.properties["Détail"] || "")
-
-+
-
-'</div>'
-
-+
+'<div style="font-size:13px;">' +
+(feature.properties["Détail"] || "") +
+'</div>' +
 
 '</div>',
-
 {
-maxWidth:320
+maxWidth: 320
 }
-
 );
+``
 
 }
 
