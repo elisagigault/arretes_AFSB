@@ -613,7 +613,9 @@ blocStatut.style.background="#f2f2f2";
 blocStatut.className =
 "statut";
 blocStatut.style.position = "sticky";
-blocStatut.style.top = "220px";
+blocStatut.style.top =
+document.getElementById("sidebar-header")
+.offsetHeight + "px";
 blocStatut.style.zIndex = "20";
 const nbStatut =
 Object.keys(groupes[statut]).length;
@@ -991,12 +993,11 @@ itemTrouve.style.background = "#dff0ff";
 itemTrouve.style.borderColor = "#5aa9ff";
 itemTrouve.style.boxShadow = "0 0 0 2px #5aa9ff";
 
-itemSelectionne = itemTrouve;
-
 itemTrouve.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
+  behavior: "smooth",
+  block: "center"
 });
+itemSelectionne = itemTrouve;
 
 }
 
