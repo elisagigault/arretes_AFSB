@@ -101,6 +101,35 @@ cursor:pointer;
 #listeArretes{
 
 font-size:14px;
+
+overflow-y:auto;
+flex-grow:1;
+position:relative;
+}
+
+.statut{
+
+position:sticky;
+top:0;
+z-index:20;
+
+margin-top:12px;
+
+padding:10px;
+
+background:#e9ecef;
+
+border-radius:8px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+user-select:none;
+
+border-left:5px solid #666;
+
+transition:0.2s;
 }
 
 .groupe{
@@ -612,11 +641,7 @@ blocStatut.style.background="#f2f2f2";
 }
 blocStatut.className =
 "statut";
-blocStatut.style.position = "sticky";
-blocStatut.style.top =
-document.getElementById("sidebar-header")
-.offsetHeight + "px";
-blocStatut.style.zIndex = "20";
+
 const nbStatut =
 Object.keys(groupes[statut]).length;
 
