@@ -7,37 +7,6 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.514479,
-            44.720557,
-            0
-          ],
-          [
-            -0.515139,
-            44.720877,
-            0
-          ],
-          [
-            -0.515123,
-            44.720969,
-            0
-          ]
-        ]
-      },
-      "properties": {
-        "Type": "Circulation alternée",
-        "Durée max (j)": "14",
-        "Marché": null,
-        "Date début": "2026-07-23",
-        "Date fin": "2026-08-05",
-        "Titre": "Travaux d'AEP"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
             -0.540453,
             44.75222,
             0
@@ -1431,6 +1400,38 @@
         "Date début": "2026-07-01",
         "Date fin": "2026-07-21",
         "Titre": "Bedat - Travaux assainissement"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.514479,
+            44.720557,
+            0
+          ],
+          [
+            -0.515139,
+            44.720877,
+            0
+          ],
+          [
+            -0.515123,
+            44.720969,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "Type": "Circulation alternée",
+        "Durée max (j)": "14",
+        "Marché": null,
+        "Date début": "2026-07-23",
+        "Date fin": "2026-08-05",
+        "Titre": "Travaux d'AEP",
+        "Arrêté": "2026/122"
       }
     },
     {
