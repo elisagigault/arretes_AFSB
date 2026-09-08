@@ -376,92 +376,6 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.539232,
-            44.75588
-          ],
-          [
-            -0.538888,
-            44.755953
-          ]
-        ]
-      },
-      "properties": {
-        "Date début": "2026-09-07",
-        "Date fin": "2026-09-11",
-        "Type": "Circulation alternée",
-        "Marché": "TIERS",
-        "Titre": "Travaux GC Moulin Noir"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -0.54148,
-            44.754371
-          ],
-          [
-            -0.541468,
-            44.754528
-          ],
-          [
-            -0.541162,
-            44.755133
-          ],
-          [
-            -0.540921,
-            44.755195
-          ],
-          [
-            -0.540605,
-            44.755255
-          ],
-          [
-            -0.54039,
-            44.755339
-          ]
-        ]
-      },
-      "properties": {
-        "Date début": "2026-09-14",
-        "Date fin": "2026-09-18",
-        "Type": "Circulation alternée",
-        "Marché": "TIERS",
-        "Titre": "Travaux GC Jean Moulin"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -0.53571,
-            44.75177
-          ],
-          [
-            -0.53549,
-            44.752355
-          ]
-        ]
-      },
-      "properties": {
-        "Titre": "Dépose du totem de la gare",
-        "Date début": "09/09/2026",
-        "Date fin": "11/09/2026",
-        "Type": "Circulation alternée",
-        "Durée max (j)": "3",
-        "Marché": "GCOA7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
             -0.509049,
             44.7195,
             0
@@ -624,6 +538,97 @@
         "Date fin": "2027-02-27",
         "Titre": "Fermeture définitive du passage à niveau n°13",
         "Détail": "Travaux de terrassement pour la réalisation d'un ouvrage cadre, suite à  la suppression du passage à niveau N°13"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.540068,
+            44.755541
+          ],
+          [
+            -0.539623,
+            44.754856
+          ],
+          [
+            -0.539618,
+            44.754772
+          ],
+          [
+            -0.539714,
+            44.754661
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Travaux de murs de soutènements",
+        "Date début": "2026-09-20",
+        "Date fin": "2026-11-18",
+        "Type": "Route barrée",
+        "Durée max (j)": "60",
+        "Détail": "2 phases de 30j, une circulation piétonne sera maintenue en journée, l'accès aux habitations sera ouvert le soir et les week-ends afin de garantir un accès pour les secours et pour les riverains",
+        "Marché": "GCOA7"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.533738,
+            44.744509
+          ],
+          [
+            -0.533792,
+            44.744829
+          ],
+          [
+            -0.53435,
+            44.745758
+          ],
+          [
+            -0.536538,
+            44.749526
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Travaux de murs de soutènements",
+        "Date début": "2026-10-05",
+        "Date fin": "2027-03-03",
+        "Type": "Route barrée",
+        "Durée max (j)": "60",
+        "Détail": "Phase 1 = 30j, phase 2-4 : 40j/phase. Une circulation piétonne sera maintenue en journée, l'accès aux habitations sera ouvert le soir et les week-ends afin de garantir un accès pour les secours et pour les riverains",
+        "Marché": "GCOA7"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.521446,
+            44.727311
+          ],
+          [
+            -0.519445,
+            44.728789
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Travaux GC BOUYGUES",
+        "Date début": "2026-09-21",
+        "Date fin": "2026-10-09",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "3",
+        "Détail": "Travaux sur 3 entre le 20/09/026 et le 09/10/2026.",
+        "Marché": "TIERS BOUYGUES"
       }
     },
     {
@@ -1319,6 +1324,95 @@
         "Marché": "GCOA3",
         "Détail": "Prolongation 189.2026 - Création d'un ouvrage de franchissement de la voie SNCF et raccordement des carrefours. Réalisation de la chaussée et du trottoir.",
         "Arrêté": "226.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.539232,
+            44.75588
+          ],
+          [
+            -0.538888,
+            44.755953
+          ]
+        ]
+      },
+      "properties": {
+        "Date début": "2026-09-07",
+        "Date fin": "2026-09-11",
+        "Type": "Circulation alternée",
+        "Marché": "TIERS",
+        "Titre": "Travaux GC Moulin Noir",
+        "Arrêté": "244/2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.54148,
+            44.754371
+          ],
+          [
+            -0.541468,
+            44.754528
+          ],
+          [
+            -0.541162,
+            44.755133
+          ],
+          [
+            -0.540921,
+            44.755195
+          ],
+          [
+            -0.540605,
+            44.755255
+          ],
+          [
+            -0.54039,
+            44.755339
+          ]
+        ]
+      },
+      "properties": {
+        "Date début": "2026-09-14",
+        "Date fin": "2026-09-18",
+        "Type": "Circulation alternée",
+        "Marché": "TIERS",
+        "Titre": "Travaux GC Jean Moulin",
+        "Arrêté": "244/2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.53571,
+            44.75177
+          ],
+          [
+            -0.53549,
+            44.752355
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Dépose du totem de la gare",
+        "Date début": "2026-09-09",
+        "Date fin": "2026-09-11",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "3",
+        "Marché": "GCOA7",
+        "Arrêté": "267.2026"
       }
     },
     {
