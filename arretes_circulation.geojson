@@ -637,6 +637,34 @@
         "type": "LineString",
         "coordinates": [
           [
+            -0.536603,
+            44.74957
+          ],
+          [
+            -0.536269,
+            44.749689
+          ],
+          [
+            -0.53594,
+            44.749815
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Réalisation d'abaissés pour le futur parking de la halte",
+        "Date début": "2026-09-14",
+        "Date fin": "2026-09-18",
+        "Type": "Circulation alternée",
+        "Détail": "Circulation alternée manuelle",
+        "Marché": "GCOA7"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
             -0.536613,
             44.749568,
             0
