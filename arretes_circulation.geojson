@@ -7,176 +7,6 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.509049,
-            44.7195,
-            0
-          ],
-          [
-            -0.509162,
-            44.719361,
-            0
-          ]
-        ]
-      },
-      "properties": {
-        "Type": "Route barrée",
-        "Durée max (j)": "122",
-        "Marché": "GCOA12",
-        "Date début": "2026-09-16",
-        "Date fin": "2027-02-27",
-        "Titre": "Fermeture définitive du passage à niveau n°13",
-        "Détail": "Travaux de terrassement pour la réalisation d'un ouvrage cadre, suite à  la suppression du passage à niveau N°13"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -0.509049,
-            44.7195,
-            0
-          ],
-          [
-            -0.508579,
-            44.720019
-          ],
-          [
-            -0.508107,
-            44.720172
-          ],
-          [
-            -0.507925,
-            44.720294
-          ],
-          [
-            -0.507796,
-            44.720439
-          ],
-          [
-            -0.507828,
-            44.72066
-          ],
-          [
-            -0.507967,
-            44.720904
-          ],
-          [
-            -0.50919,
-            44.721895
-          ],
-          [
-            -0.511894,
-            44.724258
-          ],
-          [
-            -0.512195,
-            44.724288
-          ],
-          [
-            -0.512366,
-            44.724197
-          ],
-          [
-            -0.512699,
-            44.724653
-          ],
-          [
-            -0.513117,
-            44.724364
-          ],
-          [
-            -0.513182,
-            44.724159
-          ],
-          [
-            -0.513192,
-            44.723945
-          ],
-          [
-            -0.513225,
-            44.72364
-          ],
-          [
-            -0.513461,
-            44.723396
-          ],
-          [
-            -0.513912,
-            44.723083
-          ],
-          [
-            -0.514104,
-            44.722954
-          ],
-          [
-            -0.514222,
-            44.722832
-          ],
-          [
-            -0.514287,
-            44.722543
-          ],
-          [
-            -0.514297,
-            44.722344
-          ],
-          [
-            -0.514276,
-            44.722024
-          ],
-          [
-            -0.514405,
-            44.721697
-          ],
-          [
-            -0.514684,
-            44.721292
-          ],
-          [
-            -0.515091,
-            44.72098
-          ],
-          [
-            -0.515146,
-            44.720858
-          ],
-          [
-            -0.512645,
-            44.719653
-          ],
-          [
-            -0.511132,
-            44.718838
-          ],
-          [
-            -0.509845,
-            44.718457
-          ],
-          [
-            -0.509162,
-            44.719361,
-            0
-          ]
-        ]
-      },
-      "properties": {
-        "Type": "Déviation",
-        "Durée max (j)": "122",
-        "Marché": "GCOA12",
-        "Date début": "2026-09-16",
-        "Date fin": "2027-02-27",
-        "Titre": "Fermeture définitive du passage à niveau n°13",
-        "Détail": "Travaux de terrassement pour la réalisation d'un ouvrage cadre, suite à  la suppression du passage à niveau N°13"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
             -0.540068,
             44.755541
           ],
@@ -286,43 +116,6 @@
         "Date début": "2026-09-14",
         "Date fin": "2026-09-18",
         "Type": "Circulation alternée",
-        "Détail": "Circulation alternée manuelle",
-        "Marché": "GCOA7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -0.539395,
-            44.755838
-          ],
-          [
-            -0.539754,
-            44.755763
-          ],
-          [
-            -0.540027,
-            44.755676
-          ],
-          [
-            -0.540052,
-            44.755663
-          ],
-          [
-            -0.54008,
-            44.755628
-          ]
-        ]
-      },
-      "properties": {
-        "Titre": "Enrobés à froid",
-        "Date début": "2026-09-21",
-        "Date fin": "2026-09-25",
-        "Type": "Circulation alternée",
-        "Durée max (j)": "5",
         "Détail": "Circulation alternée manuelle",
         "Marché": "GCOA7"
       }
@@ -1489,6 +1282,44 @@
         "type": "LineString",
         "coordinates": [
           [
+            -0.539395,
+            44.755838
+          ],
+          [
+            -0.539754,
+            44.755763
+          ],
+          [
+            -0.540027,
+            44.755676
+          ],
+          [
+            -0.540052,
+            44.755663
+          ],
+          [
+            -0.54008,
+            44.755628
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Enrobés à froid",
+        "Date début": "2026-09-21",
+        "Date fin": "2026-09-25",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "5",
+        "Détail": "Circulation alternée manuelle",
+        "Marché": "GCOA7",
+        "Arrêté": "280.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
             -0.506264,
             44.717132,
             0
@@ -1739,6 +1570,178 @@
         "Titre": "Installation d'une grue à tour",
         "Arrêté": "2026-150",
         "Détail": "Arrêté d'utilisation délivréà la réception des rapports M2C, M3 et M4 émis sans réserve ni observtion. "
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.509049,
+            44.7195,
+            0
+          ],
+          [
+            -0.509162,
+            44.719361,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "Type": "Route barrée",
+        "Durée max (j)": "122",
+        "Marché": "GCOA12",
+        "Date début": "2026-09-16",
+        "Date fin": "2027-02-27",
+        "Titre": "Fermeture définitive du passage à niveau n°13",
+        "Détail": "Travaux de terrassement pour la réalisation d'un ouvrage cadre, suite à  la suppression du passage à niveau N°13 - Arrêtés 2026-160 & 2026-161",
+        "Arrêté": "2026-160"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.509049,
+            44.7195,
+            0
+          ],
+          [
+            -0.508579,
+            44.720019
+          ],
+          [
+            -0.508107,
+            44.720172
+          ],
+          [
+            -0.507925,
+            44.720294
+          ],
+          [
+            -0.507796,
+            44.720439
+          ],
+          [
+            -0.507828,
+            44.72066
+          ],
+          [
+            -0.507967,
+            44.720904
+          ],
+          [
+            -0.50919,
+            44.721895
+          ],
+          [
+            -0.511894,
+            44.724258
+          ],
+          [
+            -0.512195,
+            44.724288
+          ],
+          [
+            -0.512366,
+            44.724197
+          ],
+          [
+            -0.512699,
+            44.724653
+          ],
+          [
+            -0.513117,
+            44.724364
+          ],
+          [
+            -0.513182,
+            44.724159
+          ],
+          [
+            -0.513192,
+            44.723945
+          ],
+          [
+            -0.513225,
+            44.72364
+          ],
+          [
+            -0.513461,
+            44.723396
+          ],
+          [
+            -0.513912,
+            44.723083
+          ],
+          [
+            -0.514104,
+            44.722954
+          ],
+          [
+            -0.514222,
+            44.722832
+          ],
+          [
+            -0.514287,
+            44.722543
+          ],
+          [
+            -0.514297,
+            44.722344
+          ],
+          [
+            -0.514276,
+            44.722024
+          ],
+          [
+            -0.514405,
+            44.721697
+          ],
+          [
+            -0.514684,
+            44.721292
+          ],
+          [
+            -0.515091,
+            44.72098
+          ],
+          [
+            -0.515146,
+            44.720858
+          ],
+          [
+            -0.512645,
+            44.719653
+          ],
+          [
+            -0.511132,
+            44.718838
+          ],
+          [
+            -0.509845,
+            44.718457
+          ],
+          [
+            -0.509162,
+            44.719361,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "Type": "Déviation",
+        "Durée max (j)": "122",
+        "Marché": "GCOA12",
+        "Date début": "2026-09-16",
+        "Date fin": "2027-02-27",
+        "Titre": "Fermeture définitive du passage à niveau n°13",
+        "Détail": "Travaux de terrassement pour la réalisation d'un ouvrage cadre, suite à  la suppression du passage à niveau N°13 - Arrêtés 2026-160 & 2026-161",
+        "Arrêté": "2026-160"
       }
     },
     {
