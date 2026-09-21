@@ -73,31 +73,6 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.521446,
-            44.727311
-          ],
-          [
-            -0.519445,
-            44.728789
-          ]
-        ]
-      },
-      "properties": {
-        "Titre": "Travaux GC BOUYGUES",
-        "Date début": "2026-09-21",
-        "Date fin": "2026-10-09",
-        "Type": "Circulation alternée",
-        "Durée max (j)": "3",
-        "Détail": "Travaux sur 3 entre le 20/09/026 et le 09/10/2026.",
-        "Marché": "TIERS BOUYGUES"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
             -0.536603,
             44.74957
           ],
@@ -1274,6 +1249,32 @@
         "Date fin": "2028-01-26",
         "Titre": "Travaux Pont Général de Gaulle",
         "Arrêté": "272.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.521446,
+            44.727311
+          ],
+          [
+            -0.519445,
+            44.728789
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Travaux GC BOUYGUES",
+        "Date début": "2026-09-21",
+        "Date fin": "2026-10-09",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "3",
+        "Détail": "Travaux sur 3 entre le 20/09/026 et le 09/10/2026.",
+        "Marché": "TIERS BOUYGUES",
+        "Arrêté": "279.2026"
       }
     },
     {
