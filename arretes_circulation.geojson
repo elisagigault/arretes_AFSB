@@ -73,26 +73,35 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.536603,
-            44.74957
+            -0.512709,
+            44.725527
           ],
           [
-            -0.536269,
-            44.749689
+            -0.512786,
+            44.725333
           ],
           [
-            -0.53594,
-            44.749815
+            -0.512836,
+            44.725147
+          ],
+          [
+            -0.512834,
+            44.72505
+          ],
+          [
+            -0.5128,
+            44.724921
           ]
         ]
       },
       "properties": {
-        "Titre": "Réalisation d'abaissés pour le futur parking de la halte",
-        "Date début": "2026-09-14",
-        "Date fin": "2026-09-18",
+        "Titre": "Sémolition GBA",
+        "Date début": "2026-10-05",
+        "Date fin": "2026-10-09",
         "Type": "Circulation alternée",
-        "Détail": "Circulation alternée manuelle",
-        "Marché": "GCOA7"
+        "Durée max (j)": "5",
+        "Détail": "Mise en place de K16 lestées provisoirement en substitution de la GBA pour les travaux ENEDIS",
+        "Marché": "GCOA8"
       }
     },
     {
@@ -1249,6 +1258,35 @@
         "Date fin": "2028-01-26",
         "Titre": "Travaux Pont Général de Gaulle",
         "Arrêté": "272.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.536603,
+            44.74957
+          ],
+          [
+            -0.536269,
+            44.749689
+          ],
+          [
+            -0.53594,
+            44.749815
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Réalisation d'abaissés pour le futur parking de la halte",
+        "Date début": "2026-09-14",
+        "Date fin": "2026-09-18",
+        "Type": "Circulation alternée",
+        "Détail": "Circulation alternée manuelle - Arrêté sur la création de l'accès : 273.2026 / arrêté d'alternat : 274.2026",
+        "Marché": "GCOA7",
+        "Arrêté": "273.2026"
       }
     },
     {
