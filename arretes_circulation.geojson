@@ -110,6 +110,30 @@
         "type": "LineString",
         "coordinates": [
           [
+            -0.52662,
+            44.733546
+          ],
+          [
+            -0.526086,
+            44.734298
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Pose d'un réseau d'EP",
+        "Date début": "2026-10-05",
+        "Date fin": "2026-10-13",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "9",
+        "Marché": "VRFDPEM"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
             -0.536613,
             44.749568,
             0
