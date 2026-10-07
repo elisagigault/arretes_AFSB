@@ -40,39 +40,6 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.533738,
-            44.744509
-          ],
-          [
-            -0.533792,
-            44.744829
-          ],
-          [
-            -0.53435,
-            44.745758
-          ],
-          [
-            -0.536538,
-            44.749526
-          ]
-        ]
-      },
-      "properties": {
-        "Titre": "Travaux de murs de soutènements - Balette",
-        "Date début": "2026-10-05",
-        "Date fin": "2027-03-03",
-        "Type": "Route barrée",
-        "Durée max (j)": "60",
-        "Détail": "Phase 1 = 30j, phase 2-4 : 40j/phase. Une circulation piétonne sera maintenue en journée, l'accès aux habitations sera ouvert le soir et les week-ends afin de garantir un accès pour les secours et pour les riverains",
-        "Marché": "GCOA7"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
             -0.512709,
             44.725527
           ],
@@ -120,12 +87,13 @@
         ]
       },
       "properties": {
-        "Titre": "Pose d'un réseau d'EP",
-        "Date début": "2026-10-05",
-        "Date fin": "2026-10-13",
+        "Titre": "Reprofilage du fossé existant",
+        "Date début": "2026-10-12",
+        "Date fin": "2026-10-21",
         "Type": "Circulation alternée",
-        "Durée max (j)": "9",
-        "Marché": "VRFDPEM"
+        "Durée max (j)": "10",
+        "Marché": "GCOA7",
+        "Détail": "Circulation alternée manuelle à l'avancement"
       }
     },
     {
@@ -1375,6 +1343,65 @@
         "Détail": "Circulation alternée manuelle",
         "Marché": "GCOA7",
         "Arrêté": "280.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.533738,
+            44.744509
+          ],
+          [
+            -0.533792,
+            44.744829
+          ],
+          [
+            -0.53435,
+            44.745758
+          ],
+          [
+            -0.536538,
+            44.749526
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Travaux de murs de soutènements - Balette",
+        "Date début": "2026-10-05",
+        "Date fin": "2027-03-03",
+        "Type": "Route barrée",
+        "Durée max (j)": "60",
+        "Détail": "Phase 1 = 30j, phase 2-4 : 40j/phase. Une circulation piétonne sera maintenue en journée, l'accès aux habitations sera ouvert le soir et les week-ends afin de garantir un accès pour les secours et pour les riverains",
+        "Marché": "GCOA7",
+        "Arrêté": "303.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.52662,
+            44.733546
+          ],
+          [
+            -0.526086,
+            44.734298
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Pose d'un réseau d'EP",
+        "Date début": "2026-10-05",
+        "Date fin": "2026-10-13",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "9",
+        "Marché": "VRFDPEM",
+        "Arrêté": "306.2026"
       }
     },
     {
