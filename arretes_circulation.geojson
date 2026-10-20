@@ -77,31 +77,6 @@
         "type": "LineString",
         "coordinates": [
           [
-            -0.52662,
-            44.733546
-          ],
-          [
-            -0.526086,
-            44.734298
-          ]
-        ]
-      },
-      "properties": {
-        "Titre": "Reprofilage du fossé existant",
-        "Date début": "2026-10-12",
-        "Date fin": "2026-10-21",
-        "Type": "Circulation alternée",
-        "Durée max (j)": "10",
-        "Marché": "GCOA7",
-        "Détail": "Circulation alternée manuelle à l'avancement"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
             -0.519511,
             44.728748
           ],
@@ -1615,6 +1590,32 @@
         "Durée max (j)": "9",
         "Marché": "VRFDPEM",
         "Arrêté": "306.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.52662,
+            44.733546
+          ],
+          [
+            -0.526086,
+            44.734298
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Reprofilage du fossé existant",
+        "Date début": "2026-10-19",
+        "Date fin": "2026-11-01",
+        "Type": "Circulation alternée",
+        "Durée max (j)": "10",
+        "Marché": "GCOA7",
+        "Détail": "Circulation alternée manuelle à l'avancement",
+        "Arrêté": "315.2026"
       }
     },
     {
