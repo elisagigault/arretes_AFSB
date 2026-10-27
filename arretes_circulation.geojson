@@ -1061,6 +1061,22 @@
             44.728812
           ],
           [
+            -0.521765,
+            44.730882
+          ],
+          [
+            -0.52331,
+            44.731065
+          ],
+          [
+            -0.524855,
+            44.731674
+          ],
+          [
+            -0.527,
+            44.73393
+          ],
+          [
             -0.529017,
             44.737392
           ]
@@ -1446,6 +1462,41 @@
         "Titre": "OCP Travaux Pont Général de Gaulle",
         "Détail": "Déviation PL",
         "Arrêté": "272.2026"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              -0.532976,
+              44.744207
+            ],
+            [
+              -0.53259,
+              44.743552
+            ]
+          ],
+          [
+            [
+              -0.529833,
+              44.738858
+            ],
+            [
+              -0.529039,
+              44.737392
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Travaux préparatoires OH PEG & GM",
+        "Date début": "2026-11-12",
+        "Date fin": "2026-11-21",
+        "Type": "Circulation alternée",
+        "Marché": "GCOA7"
       }
     },
     {
