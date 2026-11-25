@@ -110,6 +110,29 @@
     {
       "type": "Feature",
       "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.516095,
+            44.720591
+          ],
+          [
+            -0.515749,
+            44.720706
+          ]
+        ]
+      },
+      "properties": {
+        "Titre": "Passage piéton provisoire",
+        "Type": "Circulation alternée",
+        "Marché": "GCOA8",
+        "Date début": "2026-11-30",
+        "Date fin": "2026-12-04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
         "type": "MultiLineString",
         "coordinates": [
           [
